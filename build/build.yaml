@@ -42,8 +42,9 @@ steps:
       git config --global user.email "subzone@live.com"
       git config --global user.name "Milenko Mitrovic"
       git add .
+      whoami
       git commit -m "Update version based on repository tag"
-      git push origin master
+      git push
     displayName: 'Commit to master branch'
 
   
