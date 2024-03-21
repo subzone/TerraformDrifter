@@ -6,4 +6,18 @@ pool:
 steps:
   - checkout: self
 
-  
+  - task: TerraformTaskV4@4
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+      backendServiceArm: 'Azure subscription 1(836dac06-9190-4ca2-980f-c1fa69e59375)'
+      backendAzureRmResourceGroupName: 'career-base-weu-dev'
+      backendAzureRmStorageAccountName: 'careerbaseweudev'
+      backendAzureRmContainerName: 'tfstate'
+      backendAzureRmKey: 'test-tfstate'
+   
+
+  - task: TerraformDrift@1
+    inputs:
+      workingDirectory: '$(System.DefaultWorkingDirectory)\terraform'
