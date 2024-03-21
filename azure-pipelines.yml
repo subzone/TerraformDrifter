@@ -16,12 +16,7 @@ steps:
       backendAzureRmStorageAccountName: 'careerbaseweudev'
       backendAzureRmContainerName: 'tfstate'
       backendAzureRmKey: 'test-tfstate'
-
-  - task: TerraformCLI@1
-    inputs:
-      command: 'init'
-      workingDirectory: '$(System.DefaultWorkingDirectory)\terraform'
-      allowTelemetryCollection: true    
+   
 
   - task: TerraformDrift@1
     inputs:
