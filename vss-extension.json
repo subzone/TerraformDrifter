@@ -1,40 +1,42 @@
 {
-    "manifestVersion": 1,
-    "id": "terraform-drift",
-    "publisher": "subzone",
-    "version": "1.0.4",
-    "name": "TerraformDrift",
-    "description": "An Azure DevOps task that checks for Terraform drift and enables reconciliation",
-    "public": false,
-    "categories": ["Azure Pipelines"],
-    "icons": {
-      "default": "images/icon.png"
+  "manifestVersion": 1,
+  "id": "terraform-drift",
+  "publisher": "subzone",
+  "version": "1.0.11",
+  "name": "TerraformDrift",
+  "description": "An Azure DevOps task that checks for Terraform drift and enables reconciliation",
+  "public": false,
+  "categories": [
+    "Azure Pipelines"
+  ],
+  "icons": {
+    "default": "images/icon.png"
+  },
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services.Cloud"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "4ff71419-e8e0-48a0-8a74-3b8bf2192af8",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "buildandreleasetask/TerraformDrift"
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "buildandreleasetask/TerraformDrift/task.json",
+      "addressable": true
     },
-    "targets": [
-      {
-        "id": "Microsoft.VisualStudio.Services.Cloud"
-      }
-    ],
-    "contributions": [
-      {
-        "id": "4ff71419-e8e0-48a0-8a74-3b8bf2192af8",
-        "type": "ms.vss-distributed-task.task",
-        "targets": [
-          "ms.vss-distributed-task.tasks"
-        ],
-         "properties": {
-            "name": "buildandreleasetask/TerraformDrift"
-        }
-      }
-    ],
-    "files": [
-        {
-            "path": "buildandreleasetask/TerraformDrift/task.json",
-            "addressable": true
-        },
-        {
-            "path": "buildandreleasetask/TerraformDrift/terraform-drift.sh",
-            "contentType": "application/x-sh"
-        }
-    ]
-  }
+    {
+      "path": "buildandreleasetask/TerraformDrift/terraform-drift.sh",
+      "contentType": "application/x-sh"
+    }
+  ]
+}
