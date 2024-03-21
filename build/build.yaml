@@ -11,9 +11,9 @@ steps:
     displayName: 'Install tfx-cli'
 
   - script: |
-    PATCH=$(cat Patch.txt)
-    PATCH=$((PATCH + 1))
-    echo $PATCH > Patch.txt
+      PATCH=$(cat Patch.txt)
+      PATCH=$((PATCH + 1))
+      echo $PATCH > Patch.txt
     displayName: 'Increment Patch version'
 
   - script: |
@@ -22,12 +22,12 @@ steps:
     displayName: 'Update version based on repository tag'
 
   - script: |
-    MAJOR=$(cat Major.txt)
-    MINOR=$(cat Minor.txt)
-    PATCH=$(cat Patch.txt)
-    jq '.tasks[0].version.Major = '$MAJOR'' task.json > temp.json && mv temp.json task.json
-    jq '.tasks[0].version.Minor = '$MINOR'' task.json > temp.json && mv temp.json task.json
-    jq '.tasks[0].version.Patch = '$PATCH'' task.json > temp.json && mv temp.json task.json
+      MAJOR=$(cat Major.txt)
+      MINOR=$(cat Minor.txt)
+      PATCH=$(cat Patch.txt)
+      jq '.tasks[0].version.Major = '$MAJOR'' task.json > temp.json && mv temp.json task.json
+      jq '.tasks[0].version.Minor = '$MINOR'' task.json > temp.json && mv temp.json task.json
+      jq '.tasks[0].version.Patch = '$PATCH'' task.json > temp.json && mv temp.json task.json
     displayName: 'Update task.json version based on Major, Minor and Patch files'
 
   - script: |
