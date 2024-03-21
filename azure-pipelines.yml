@@ -6,9 +6,10 @@ pool:
 steps:
   - checkout: self
 
-  - task: TerraformInstaller@1
+  - task: TerraformTaskV4@4
     inputs:
-      terraformVersion: 'latest'
+      provider: 'azurerm'
+      command: 'init'
 
   - task: TerraformCLI@1
     inputs:
