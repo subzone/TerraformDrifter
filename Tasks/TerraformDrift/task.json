@@ -1,0 +1,32 @@
+{
+    "id": "4ff71419-e8e0-48a0-8a74-3b8bf2192af8",
+    "name": "TerraformDriftCheck",
+    "friendlyName": "Terraform Drift Check",
+    "description": "Checks for Terraform drift and enables reconciliation",
+    "author": "subzone",
+    "category": "Utility",
+    "visibility": ["Build", "Release"],
+    "demands": [],
+    "version": {
+      "Major": 1,
+      "Minor": 0,
+      "Patch": 0
+    },
+    "instanceNameFormat": "Check Terraform Drift",
+    "inputs": [
+      {
+        "name": "workingDirectory",
+        "type": "filePath",
+        "label": "Working Directory",
+        "defaultValue": "",
+        "required": true,
+        "helpMarkDown": "Path to the directory containing the Terraform files."
+      }
+    ],
+    "execution": {
+      "Bash": {
+        "target": "terraform-drift.sh",
+        "argumentFormat": "\"$(workingDirectory)\""
+      }
+    }
+  }
