@@ -25,9 +25,9 @@ steps:
       MAJOR=$(cat Major.txt)
       MINOR=$(cat Minor.txt)
       PATCH=$(cat Patch.txt)
-      jq '.tasks[0].version.Major = '$MAJOR'' task.json > temp.json && mv temp.json task.json
-      jq '.tasks[0].version.Minor = '$MINOR'' task.json > temp.json && mv temp.json task.json
-      jq '.tasks[0].version.Patch = '$PATCH'' task.json > temp.json && mv temp.json task.json
+      jq '.tasks[0].version.Major = '$MAJOR'' buildandreleasetask/TerraformDrift/task.json > temp.json && mv temp.json buildandreleasetask/TerraformDrift/task.json
+      jq '.tasks[0].version.Minor = '$MINOR'' buildandreleasetask/TerraformDrift/task.json > temp.json && mv temp.json buildandreleasetask/TerraformDrift/task.json
+      jq '.tasks[0].version.Patch = '$PATCH'' buildandreleasetask/TerraformDrift/task.json > temp.json && mv temp.json buildandreleasetask/TerraformDrift/task.json
     displayName: 'Update task.json version based on Major, Minor and Patch files'
 
   - script: |
