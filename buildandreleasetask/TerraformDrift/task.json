@@ -37,14 +37,5 @@
       "target": "terraform-drift.sh",
       "argumentFormat": "\"$(workingDirectory)\""
     }
-  },
-  "tasks": [
-    {
-      "version": {
-        "Major": 1,
-        "Minor": 0,
-        "Patch": 15
-      }
-    }
-  ]
+  }
 }
