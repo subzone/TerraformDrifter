@@ -41,7 +41,7 @@ steps:
   - script: |
       git config --global user.email "subzone@live.com"
       git config --global user.name "Milenko Mitrovic"
-      git remote set-url origin https://PAT@subzone.visualstudio.com/TerraformDrifter/_git/TerraformDrifter
+      git remote set-url origin https://subzone:$(PAT)@subzone.visualstudio.com/TerraformDrifter/_git/TerraformDrifter
       git add .
       whoami
       git commit -m "Update version based on repository tag"
