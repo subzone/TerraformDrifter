@@ -31,7 +31,7 @@
   ],
   "files": [
     {
-      "path": "buildandreleasetask/TerraformDrift/overview.md"
+      "path": "overview.md"
     },
     {
       "path": "buildandreleasetask/TerraformDrift/task.json",
