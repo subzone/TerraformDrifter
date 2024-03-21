@@ -20,9 +20,9 @@ steps:
   - task: TerraformCLI@1
     inputs:
       command: 'init'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+      workingDirectory: '$(System.DefaultWorkingDirectory)\terraform'
       allowTelemetryCollection: true    
 
   - task: TerraformDrift@1
     inputs:
-      workingDirectory: 'terraform'
+      workingDirectory: '$(System.DefaultWorkingDirectory)\terraform'
