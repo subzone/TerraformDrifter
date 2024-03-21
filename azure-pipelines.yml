@@ -6,4 +6,17 @@ pool:
 steps:
   - checkout: self
 
-  
+  - task: Terraform@2
+    inputs:
+      TemplatePath: 'terraform'
+      Arguments: 'init'
+      InstallTerraform: true
+      UseAzureSub: true
+      ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+      ConnectedServiceNameARM: 'Azure subscription 1(836dac06-9190-4ca2-980f-c1fa69e59375)'
+      ManageState: true
+      SpecifyStorageAccount: false
+
+  - task: TerraformDrift@1
+    inputs:
+      workingDirectory: 'terraform'
