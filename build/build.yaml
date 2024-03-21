@@ -1,0 +1,51 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - checkout: self
+
+  - script: |
+      npm install -g tfx-cli
+    displayName: 'Install tfx-cli'
+
+  - script: |
+    PATCH=$(cat Patch.txt)
+    PATCH=$((PATCH + 1))
+    echo $PATCH > Patch.txt
+    displayName: 'Increment Patch version'
+
+  - script: |
+      VERSION=$(cat Major.txt).$(cat Minor.txt).$(cat Patch.txt)
+      jq '.version = "'$VERSION'"' vss-extension.json > temp.json && mv temp.json vss-extension.json
+    displayName: 'Update version based on repository tag'
+
+  - script: |
+    MAJOR=$(cat Major.txt)
+    MINOR=$(cat Minor.txt)
+    PATCH=$(cat Patch.txt)
+    jq '.tasks[0].version.Major = '$MAJOR'' task.json > temp.json && mv temp.json task.json
+    jq '.tasks[0].version.Minor = '$MINOR'' task.json > temp.json && mv temp.json task.json
+    jq '.tasks[0].version.Patch = '$PATCH'' task.json > temp.json && mv temp.json task.json
+    displayName: 'Update task.json version based on Major, Minor and Patch files'
+
+  - script: |
+      tfx extension create --manifest-globs vss-extension.json
+    displayName: 'Build Extension'
+
+  - script: |
+      tfx extension publish --manifest-globs vss-extension.json --token $(PAT)
+    displayName: 'Publish Extension'
+
+  - script: |
+      git config --global user.email "subzone@live.com"
+      git config --global user.name "Milenko Mitrovic"
+      git add .
+      git commit -m "Update version based on repository tag"
+      git push origin master
+    displayName: 'Commit to master branch'
+
+  
+
+  
