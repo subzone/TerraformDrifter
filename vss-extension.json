@@ -17,6 +17,11 @@
       "id": "Microsoft.VisualStudio.Services.Cloud"
     }
   ],
+  "content": {
+    "details": {
+      "path": "Marketplace.md"
+    }
+  },
   "contributions": [
     {
       "id": "4ff71419-e8e0-48a0-8a74-3b8bf2192af8",
