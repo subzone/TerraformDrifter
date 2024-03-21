@@ -31,6 +31,9 @@
   ],
   "files": [
     {
+      "path": "overview.md"
+    },
+    {
       "path": "buildandreleasetask/TerraformDrift/task.json",
       "addressable": true
     },
