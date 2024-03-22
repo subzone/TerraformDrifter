@@ -23,4 +23,4 @@ jobs:
       
       - task: TerraformDrift@1
         inputs:
-          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+          workingDirectory: $(System.DefaultWorkingDirectory)/terraform
