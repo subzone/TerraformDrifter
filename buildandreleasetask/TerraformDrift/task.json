@@ -27,6 +27,8 @@
     }
   ],
   "runsOn": [
+    "Agent",
+    "DeploymentGroup",
     "ubuntu-latest",
     "ubuntu-20.04",
     "ubuntu-18.04",
