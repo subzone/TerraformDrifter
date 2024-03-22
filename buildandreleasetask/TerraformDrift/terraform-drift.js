@@ -6,11 +6,10 @@ let provider = tl.getInput('provider', true);
 switch (provider) {
   case 'azure':
     connectedService = tl.getInput('azureSubscription', true);
-    let azureSubscription = tl.getInput('azureSubscription', true);
-    let servicePrincipalId = tl.getEndpointAuthorizationParameter(azureSubscription, 'serviceprincipalid', false);
-    let servicePrincipalKey = tl.getEndpointAuthorizationParameter(azureSubscription, 'serviceprincipalkey', false);
-    let subscriptionId = tl.getEndpointDataParameter(connectedService, 'subscriptionid', true);
-    let tenantId = tl.getEndpointAuthorizationParameter(azureSubscription, 'tenantid', false);
+    let servicePrincipalId = tl.getEndpointAuthorizationParameter(connectedService, 'serviceprincipalid', false);
+    let servicePrincipalKey = tl.getEndpointAuthorizationParameter(connectedService, 'serviceprincipalkey', false);
+    let tenantId = tl.getEndpointAuthorizationParameter(connectedService, 'tenantid', false);
+    let subscriptionId = tl.getEndpointAuthorizationParameter(connectedService, 'subscriptionid', false);
 
     process.env['ARM_TENANT_ID'] = tenantId;
     process.env['ARM_SUBSCRIPTION_ID'] = subscriptionId;
@@ -21,8 +20,8 @@ switch (provider) {
   case 'aws':
     connectedService = tl.getInput('awsSubscription', true);
     let awsSubscription = tl.getInput('awsSubscription', true);
-    let accessKeyId = tl.getEndpointAuthorizationParameter(awsSubscription, 'accesskeyid', false);
-    let secretAccessKey = tl.getEndpointAuthorizationParameter(awsSubscription, 'secretaccesskey', false);
+    let accessKeyId = tl.getEndpointAuthorizationParameter(connectedService, 'accesskeyid', false);
+    let secretAccessKey = tl.getEndpointAuthorizationParameter(connectedService, 'secretaccesskey', false);
 
     process.env['AWS_ACCESS_KEY_ID'] = accessKeyId;
     process.env['AWS_SECRET_ACCESS_KEY'] = secretAccessKey;
@@ -31,7 +30,7 @@ switch (provider) {
   case 'gcp':
     connectedService = tl.getInput('gcpSubscription', true)
     let gcpSubscription = tl.getInput('gcpSubscription', true);
-    let keyFile = tl.getEndpointAuthorizationParameter(gcpSubscription, 'keyfile', false);
+    let keyFile = tl.getEndpointAuthorizationParameter(connectedService, 'keyfile', false);
 
     process.env['GOOGLE_APPLICATION_CREDENTIALS'] = keyFile;
     break;

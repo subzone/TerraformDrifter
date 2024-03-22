@@ -1,0 +1,7 @@
+{
+  "locale": "en-US",
+  "messages": {
+    "TaskName": "Terraform Drift",
+    "TaskDescription": "Checks for Terraform drift and enables reconciliation."
+  }
+}
