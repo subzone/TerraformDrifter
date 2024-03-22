@@ -1,11 +1,14 @@
 const { spawnSync } = require('child_process');
+const tl = require('azure-pipelines-task-lib/task');
+
+let workingDirectory = tl.getInput('workingDirectory', true);
 
 process.on('uncaughtException', function(err) {
   console.error('Caught exception: ', err);
 });
 
-// The working directory is passed as the first argument
-let workingDirectory = process.argv[2];
+// // The working directory is passed as the first argument
+// let workingDirectory = process.argv[2];
 
 console.log('Working directory: ', workingDirectory);
 
