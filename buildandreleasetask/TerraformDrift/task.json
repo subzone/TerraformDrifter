@@ -30,8 +30,8 @@
     "Ubuntu"
   ],
   "execution": {
-    "Bash": {
-      "target": "terraform-drift.sh",
+    "Node": {
+      "target": "terraform-drift.js",
       "argumentFormat": "\"$(workingDirectory)\""
     }
   }
