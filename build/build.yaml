@@ -31,6 +31,12 @@ steps:
     displayName: 'Update task.json version based on Major, Minor and Patch files'
 
   - script: |
+      cd $(System.DefaultWorkingDirectory)/buildandreleasetask/TerraformDrift
+      npm install
+      webpack
+    displayName: 'Build webpack'
+
+  - script: |
       tfx extension create --manifest-globs vss-extension.json
     displayName: 'Build Extension'
 

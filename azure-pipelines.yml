@@ -24,3 +24,4 @@ jobs:
       - task: TerraformDrift@1
         inputs:
           workingDirectory: $(System.DefaultWorkingDirectory)/terraform
+          azureSubscription: 'My Service Connection'

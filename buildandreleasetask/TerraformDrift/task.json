@@ -24,6 +24,14 @@
       "defaultValue": "",
       "required": true,
       "helpMarkDown": "Path to the directory containing the Terraform files."
+    },
+    {
+      "name": "azureSubscription",
+      "type": "connectedService:AzureRM",
+      "label": "Azure subscription",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Select the Azure Resource Manager subscription for the deployment."
     }
   ],
   "runsOn": [
