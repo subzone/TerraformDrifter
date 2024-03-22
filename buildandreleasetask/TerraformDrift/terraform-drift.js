@@ -13,7 +13,7 @@ switch (provider) {
     servicePrincipalId = tl.getEndpointAuthorizationParameter(azureService, 'serviceprincipalid', false);
     servicePrincipalKey = tl.getEndpointAuthorizationParameter(azureService, 'serviceprincipalkey', false);
     tenantId = tl.getEndpointAuthorizationParameter(azureService, 'tenantid', false);
-    subscriptionId = tl.getEndpointAuthorizationParameter(azureService, 'subscriptionid', false);
+    subscriptionId = tl.getEndpointDataParameter(azureService, 'subscriptionid', false);
 
     process.env['ARM_TENANT_ID'] = tenantId;
     process.env['ARM_SUBSCRIPTION_ID'] = subscriptionId;
