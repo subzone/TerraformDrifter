@@ -2,6 +2,16 @@ const { spawnSync } = require('child_process');
 const tl = require('azure-pipelines-task-lib/task');
 
 let workingDirectory = tl.getInput('workingDirectory', true);
+let connectedService = tl.getInput('azureSubscription', true);
+let tenantId = tl.getEndpointAuthorizationParameter(connectedService, 'tenantid', false);
+let servicePrincipalId = tl.getEndpointAuthorizationParameter(connectedService, 'serviceprincipalid', false);
+let servicePrincipalKey = tl.getEndpointAuthorizationParameter(connectedService, 'serviceprincipalkey', false);
+
+console.log('Tenant ID: ', tenantId);
+// console.log('Service Principal ID: ', servicePrincipalId);
+// console.log('Service Principal Key: ', servicePrincipalKey);
+process.env['ARM_CLIENT_ID'] = servicePrincipalId;
+process.env['ARM_CLIENT_SECRET'] = servicePrincipalKey;
 
 process.on('uncaughtException', function(err) {
   console.error('Caught exception: ', err);
