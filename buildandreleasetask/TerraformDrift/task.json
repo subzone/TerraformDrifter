@@ -26,12 +26,38 @@
       "helpMarkDown": "Path to the directory containing the Terraform files."
     },
     {
+      "name": "provider",
+      "type": "pickList",
+      "label": "Cloud Provider",
+      "defaultValue": "azure",
+      "required": true,
+      "options": {
+        "azure": "Azure",
+        "aws": "AWS",
+        "gcp": "GCP"
+      },
+      "helpMarkDown": "Select the cloud provider for your infrastructure."
+    },
+    {
       "name": "azureSubscription",
       "type": "connectedService:AzureRM",
-      "label": "Azure subscription",
-      "defaultValue": "",
-      "required": true,
-      "helpMarkDown": "Select the Azure Resource Manager subscription for the deployment."
+      "label": "Azure Subscription",
+      "required": false,
+      "helpMarkDown": "Select the Azure subscription for your infrastructure."
+    },
+    {
+      "name": "awsSubscription",
+      "type": "connectedService:AWS",
+      "label": "AWS Subscription",
+      "required": false,
+      "helpMarkDown": "Select the AWS subscription for your infrastructure."
+    },
+    {
+      "name": "gcpSubscription",
+      "type": "connectedService:Google",
+      "label": "GCP Subscription",
+      "required": false,
+      "helpMarkDown": "Select the GCP subscription for your infrastructure."
     }
   ],
   "runsOn": [
