@@ -27,7 +27,7 @@
     }
   ],
   "runsOn": [
-    "Agent.OS -equals Linux"
+    "Ubuntu"
   ],
   "execution": {
     "Bash": {
