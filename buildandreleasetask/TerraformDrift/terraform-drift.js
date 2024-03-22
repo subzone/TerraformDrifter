@@ -1,5 +1,9 @@
 const shell = require('shelljs');
 
+process.on('uncaughtException', function(err) {
+    console.error('Caught exception: ', err);
+  });
+
 // The working directory is passed as the first argument
 let workingDirectory = process.argv[2];
 
