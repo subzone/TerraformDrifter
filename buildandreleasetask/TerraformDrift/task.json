@@ -9,9 +9,7 @@
     "Build",
     "Release"
   ],
-  "demands": [
-    "Agent.OS -equals Linux"
-  ],
+  "demands": [],
   "version": {
     "Major": 1,
     "Minor": 0,
