@@ -43,7 +43,7 @@
       "addressable": true
     },
     {
-      "path": "buildandreleasetask/TerraformDrift/terraform-drift.js",
+      "path": "buildandreleasetask/TerraformDrift/terraform-drift.bundle.js",
       "contentType": "application/javascript"
     },
     {
