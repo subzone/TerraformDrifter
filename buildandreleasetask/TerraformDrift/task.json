@@ -4,7 +4,7 @@
   "friendlyName": "Terraform Drift",
   "description": "Checks for Terraform drift and enables reconciliation.",
   "author": "subzone",
-  "helpMarkDown" : "https://dev.azure.com/subzone/TerraformDrifter/_workitems/create/Bug",
+  "helpMarkDown": "https://dev.azure.com/subzone/TerraformDrifter/_workitems/create/Bug",
   "category": "Utility",
   "visibility": [
     "Build",
@@ -14,7 +14,7 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 45
+    "Patch": 46
   },
   "instanceNameFormat": "Check Terraform Drift",
   "inputs": [
