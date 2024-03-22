@@ -56,7 +56,7 @@ function handleTerraformOperations(workingDirectory) {
   // Initialize Terraform
   let init = spawnSync('terraform', ['init'], { cwd: workingDirectory, stdio: 'inherit' });
   if (init.error) {
-    console.error('Error: Terraform init failed');
+    console.error('\x1b[31m%s\x1b[0m', 'Error: Terraform init failed');
     process.exit(1);
   }
 
@@ -65,13 +65,13 @@ function handleTerraformOperations(workingDirectory) {
 
   // If the exit code is 2, there is drift
   if (plan.status === 2) {
-    console.log('Drift detected. Reconciling...');
+    console.log('\x1b[33m%s\x1b[0m', 'Drift detected. Reconciling...');
     let apply = spawnSync('terraform', ['apply', '-auto-approve'], { cwd: workingDirectory, stdio: 'inherit' });
     if (apply.error) {
       console.error('Error: Terraform apply failed');
       process.exit(1);
     }
   } else {
-    console.log('No drift detected.');
+    console.log('\x1b[32m%s\x1b[0m', 'No drift detected.');
   }
 }
