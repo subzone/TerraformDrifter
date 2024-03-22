@@ -5,6 +5,7 @@ let provider = tl.getInput('provider', true);
 
 switch (provider) {
   case 'azure':
+    connectedService = tl.getInput('azureSubscription', true);
     let azureSubscription = tl.getInput('azureSubscription', true);
     let servicePrincipalId = tl.getEndpointAuthorizationParameter(azureSubscription, 'serviceprincipalid', false);
     let servicePrincipalKey = tl.getEndpointAuthorizationParameter(azureSubscription, 'serviceprincipalkey', false);
@@ -18,6 +19,7 @@ switch (provider) {
     break;
 
   case 'aws':
+    connectedService = tl.getInput('awsSubscription', true);
     let awsSubscription = tl.getInput('awsSubscription', true);
     let accessKeyId = tl.getEndpointAuthorizationParameter(awsSubscription, 'accesskeyid', false);
     let secretAccessKey = tl.getEndpointAuthorizationParameter(awsSubscription, 'secretaccesskey', false);
@@ -27,6 +29,7 @@ switch (provider) {
     break;
 
   case 'gcp':
+    connectedService = tl.getInput('gcpSubscription', true)
     let gcpSubscription = tl.getInput('gcpSubscription', true);
     let keyFile = tl.getEndpointAuthorizationParameter(gcpSubscription, 'keyfile', false);
 

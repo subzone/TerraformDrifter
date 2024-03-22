@@ -20,6 +20,7 @@ After installing the extension, you can add the Terraform Drift task to any of y
     - task: TerraformDrift@1
         inputs:
             workingDirectory: 'Your working dir where your terraform files are'
+            provider: 'azure' #can be aws, and gcp
             azureSubscription: 'Service Connection to Azure'`
 
 
