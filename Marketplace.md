@@ -20,7 +20,7 @@ After installing the extension, you can add the Terraform Drift task to any of y
 
 ## Support
 
-If you encounter any issues or have any questions, please open an issue on our GitHub repository.
+If you encounter any issues or have any questions, please open an issue here https://dev.azure.com/subzone/TerraformDrifter/_workitems/create/Bug .
 
 ## License
 

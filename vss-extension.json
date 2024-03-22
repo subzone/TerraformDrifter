@@ -50,5 +50,10 @@
       "path": "buildandreleasetask/TerraformDrift/node_modules",
       "addressable": true
     }
-  ]
+  ],
+  "feedback": {
+    "issues": {
+      "uri": "https://dev.azure.com/subzone/TerraformDrifter/_workitems/create/Bug"
+    }
+  }
 }
