@@ -1,31 +1,30 @@
-const shell = require('shelljs');
+const { spawnSync } = require('child_process');
 
 process.on('uncaughtException', function(err) {
-    console.error('Caught exception: ', err);
-  });
+  console.error('Caught exception: ', err);
+});
 
 // The working directory is passed as the first argument
 let workingDirectory = process.argv[2];
 
-// Navigate to the working directory
-shell.cd(workingDirectory);
-
 // Initialize Terraform
-if (shell.exec('terraform init').code !== 0) {
-  shell.echo('Error: Terraform init failed');
-  shell.exit(1);
+let init = spawnSync('terraform', ['init'], { cwd: workingDirectory, stdio: 'inherit' });
+if (init.error) {
+  console.error('Error: Terraform init failed');
+  process.exit(1);
 }
 
 // Check for drift
-let result = shell.exec('terraform plan -detailed-exitcode', {silent:true});
+let plan = spawnSync('terraform', ['plan', '-detailed-exitcode'], { cwd: workingDirectory, stdio: 'inherit' });
 
 // If the exit code is 2, there is drift
-if (result.code === 2) {
-  shell.echo('Drift detected. Reconciling...');
-  if (shell.exec('terraform apply -auto-approve').code !== 0) {
-    shell.echo('Error: Terraform apply failed');
-    shell.exit(1);
+if (plan.status === 2) {
+  console.log('Drift detected. Reconciling...');
+  let apply = spawnSync('terraform', ['apply', '-auto-approve'], { cwd: workingDirectory, stdio: 'inherit' });
+  if (apply.error) {
+    console.error('Error: Terraform apply failed');
+    process.exit(1);
   }
 } else {
-  shell.echo('No drift detected.');
+  console.log('No drift detected.');
 }
