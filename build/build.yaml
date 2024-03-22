@@ -39,7 +39,7 @@ steps:
     displayName: 'Publish Extension'
 
   - script: |
-      rm *.vsix -y
+      rm -f *.vsix
     displayName: 'Remove .vsix files'
 
   - script: |
