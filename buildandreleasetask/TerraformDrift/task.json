@@ -60,6 +60,14 @@
       "label": "GCP Subscription",
       "required": false,
       "helpMarkDown": "Select the GCP subscription for your infrastructure."
+    },
+    {
+      "name": "autoReconcile",
+      "type": "boolean",
+      "label": "Automatic Reconciliation",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "If true, reconciliation will be performed automatically. If false, reconciliation will need to be performed manually."
     }
   ],
   "runsOn": [

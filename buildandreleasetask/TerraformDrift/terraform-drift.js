@@ -3,6 +3,7 @@ import * as tl from 'azure-pipelines-task-lib/task';
 
 let provider = tl.getInput('provider', true);
 let workingDirectory = tl.getInput('workingDirectory', true);
+let autoReconcile = tl.getBoolInput('autoReconcile', false);
 
 let azureService, servicePrincipalId, servicePrincipalKey, tenantId, subscriptionId;
 let awsService, accessKeyId, secretAccessKey;
@@ -63,13 +64,21 @@ function handleTerraformOperations(workingDirectory) {
   // Check for drift
   let plan = spawnSync('terraform', ['plan', '-detailed-exitcode'], { cwd: workingDirectory, stdio: 'inherit' });
 
+  if (plan.error) {
+    console.error('\x1b[31m%s\x1b[0m', 'Error: Terraform plan failed');
+    process.exit(1);
+  }
   // If the exit code is 2, there is drift
   if (plan.status === 2) {
-    console.log('\x1b[33m%s\x1b[0m', 'Drift detected. Reconciling...');
-    let apply = spawnSync('terraform', ['apply', '-auto-approve'], { cwd: workingDirectory, stdio: 'inherit' });
-    if (apply.error) {
-      console.error('Error: Terraform apply failed');
-      process.exit(1);
+    if (autoReconcile) {
+        console.log('\x1b[33m%s\x1b[0m', 'Drift detected. AutoReconciliation parameter set to true. Reconciling...');
+        let apply = spawnSync('terraform', ['apply', '-auto-approve'], { cwd: workingDirectory, stdio: 'inherit' });
+        if (apply.error) {
+          console.error('Error: Terraform apply failed');
+          process.exit(1);
+        }
+    } else {
+      console.log('\x1b[32m%s\x1b[0m', 'Auto Reconciliation is set to false, please reconcile manually.');
     }
   } else {
     console.log('\x1b[32m%s\x1b[0m', 'No drift detected.');
