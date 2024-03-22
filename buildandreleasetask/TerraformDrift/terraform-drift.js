@@ -6,10 +6,13 @@ let connectedService = tl.getInput('azureSubscription', true);
 let tenantId = tl.getEndpointAuthorizationParameter(connectedService, 'tenantid', false);
 let servicePrincipalId = tl.getEndpointAuthorizationParameter(connectedService, 'serviceprincipalid', false);
 let servicePrincipalKey = tl.getEndpointAuthorizationParameter(connectedService, 'serviceprincipalkey', false);
+let subscriptionId = tl.getEndpointDataParameter(connectedService, 'subscriptionid', true);
 
 console.log('Tenant ID: ', tenantId);
 // console.log('Service Principal ID: ', servicePrincipalId);
 // console.log('Service Principal Key: ', servicePrincipalKey);
+process.env['ARM_TENANT_ID'] = tenantId;
+process.env['ARM_SUBSCRIPTION_ID'] = subscriptionId;
 process.env['ARM_CLIENT_ID'] = servicePrincipalId;
 process.env['ARM_CLIENT_SECRET'] = servicePrincipalKey;
 
