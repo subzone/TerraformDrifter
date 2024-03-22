@@ -26,3 +26,4 @@ jobs:
           workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
           provider: 'azure'
           azureSubscription: 'Azure subscription 1(836dac06-9190-4ca2-980f-c1fa69e59375)'
+          autoReconcile: false
