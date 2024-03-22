@@ -3,13 +3,16 @@ const tl = require('azure-pipelines-task-lib/task');
 
 let provider = tl.getInput('provider', true);
 
+let azureService, servicePrincipalId, servicePrincipalKey, tenantId, subscriptionId;
+let awsService, accessKeyId, secretAccessKey;
+let gcpService, keyFile;
 switch (provider) {
   case 'azure':
-    let azureService = tl.getInput('azureSubscription', true);
-    let servicePrincipalId = tl.getEndpointAuthorizationParameter(azureService, 'serviceprincipalid', false);
-    let servicePrincipalKey = tl.getEndpointAuthorizationParameter(azureService, 'serviceprincipalkey', false);
-    let tenantId = tl.getEndpointAuthorizationParameter(azureService, 'tenantid', false);
-    let subscriptionId = tl.getEndpointAuthorizationParameter(azureService, 'subscriptionid', false);
+     azureService = tl.getInput('azureSubscription', true);
+     servicePrincipalId = tl.getEndpointAuthorizationParameter(azureService, 'serviceprincipalid', false);
+     servicePrincipalKey = tl.getEndpointAuthorizationParameter(azureService, 'serviceprincipalkey', false);
+     tenantId = tl.getEndpointAuthorizationParameter(azureService, 'tenantid', false);
+     subscriptionId = tl.getEndpointAuthorizationParameter(azureService, 'subscriptionid', false);
 
     process.env['ARM_TENANT_ID'] = tenantId;
     process.env['ARM_SUBSCRIPTION_ID'] = subscriptionId;
@@ -18,19 +21,17 @@ switch (provider) {
     break;
 
   case 'aws':
-    let awsService = tl.getInput('awsSubscription', true);
-    // let awsSubscription = tl.getInput('awsSubscription', true);
-    let accessKeyId = tl.getEndpointAuthorizationParameter(awsService, 'accesskeyid', false);
-    let secretAccessKey = tl.getEndpointAuthorizationParameter(awsService, 'secretaccesskey', false);
+    awsService = tl.getInput('awsSubscription', true);
+    accessKeyId = tl.getEndpointAuthorizationParameter(awsService, 'accesskeyid', false);
+    secretAccessKey = tl.getEndpointAuthorizationParameter(awsService, 'secretaccesskey', false);
 
     process.env['AWS_ACCESS_KEY_ID'] = accessKeyId;
     process.env['AWS_SECRET_ACCESS_KEY'] = secretAccessKey;
     break;
 
   case 'gcp':
-    let gcpService = tl.getInput('gcpSubscription', true)
-    // let gcpSubscription = tl.getInput('gcpSubscription', true);
-    let keyFile = tl.getEndpointAuthorizationParameter(gcpService, 'keyfile', false);
+    gcpService = tl.getInput('gcpSubscription', true)
+    keyFile = tl.getEndpointAuthorizationParameter(gcpService, 'keyfile', false);
 
     process.env['GOOGLE_APPLICATION_CREDENTIALS'] = keyFile;
     break;
@@ -42,19 +43,9 @@ switch (provider) {
 
 
 let workingDirectory = tl.getInput('workingDirectory', true);
-// let connectedService = tl.getInput('azureSubscription', true);
-// let tenantId = tl.getEndpointAuthorizationParameter(connectedService, 'tenantid', false);
-// let servicePrincipalId = tl.getEndpointAuthorizationParameter(connectedService, 'serviceprincipalid', false);
-// let servicePrincipalKey = tl.getEndpointAuthorizationParameter(connectedService, 'serviceprincipalkey', false);
-// let subscriptionId = tl.getEndpointDataParameter(connectedService, 'subscriptionid', true);
+
 
 console.log('Tenant ID: ', tenantId);
-// console.log('Service Principal ID: ', servicePrincipalId);
-// console.log('Service Principal Key: ', servicePrincipalKey);
-// process.env['ARM_TENANT_ID'] = tenantId;
-// process.env['ARM_SUBSCRIPTION_ID'] = subscriptionId;
-// process.env['ARM_CLIENT_ID'] = servicePrincipalId;
-// process.env['ARM_CLIENT_SECRET'] = servicePrincipalKey;
 
 process.on('uncaughtException', function(err) {
   console.error('Caught exception: ', err);
