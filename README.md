@@ -14,11 +14,18 @@ This is an Azure DevOps task that checks for Terraform drift and enables reconci
 
 ## Usage
 
-After installing the extension, you can add the Terraform Drift task to any of your pipelines.
+After installing the extension, you can add the Terraform Drift task to any of your pipelines. Currently task does not do installation of terraform, so that should be handled with task preceding TerraformDrift. Also this iteration supports only Azure deployments, aws and google will be supported soon.
+
+
+    - task: TerraformDrift@1
+        inputs:
+            workingDirectory: 'Your working dir where your terraform files are'
+            azureSubscription: 'Service Connection to Azure'`
+
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
 
