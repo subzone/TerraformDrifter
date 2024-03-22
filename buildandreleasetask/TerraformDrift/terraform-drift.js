@@ -1,24 +1,27 @@
-const { exec } = require('child_process');
-const fs = require('fs');
+const shell = require('shelljs');
 
-// Get the working directory from the command line arguments
-const workingDirectory = process.argv[2];
+// The working directory is passed as the first argument
+let workingDirectory = process.argv[2];
 
-// Run the Terraform command
-exec(`terraform plan -detailed-exitcode -input=false -out=tfplan -lock=false`, { cwd: workingDirectory }, (error, stdout, stderr) => {
-  if (error) {
-    console.error(`exec error: ${error}`);
-    return;
+// Navigate to the working directory
+shell.cd(workingDirectory);
+
+// Initialize Terraform
+if (shell.exec('terraform init').code !== 0) {
+  shell.echo('Error: Terraform init failed');
+  shell.exit(1);
+}
+
+// Check for drift
+let result = shell.exec('terraform plan -detailed-exitcode', {silent:true});
+
+// If the exit code is 2, there is drift
+if (result.code === 2) {
+  shell.echo('Drift detected. Reconciling...');
+  if (shell.exec('terraform apply -auto-approve').code !== 0) {
+    shell.echo('Error: Terraform apply failed');
+    shell.exit(1);
   }
-  console.log(`stdout: ${stdout}`);
-  console.error(`stderr: ${stderr}`);
-
-  // Check for drift
-  if (error && error.code === 2) {
-    console.log('Drift detected.');
-    // Write the drift details to a file
-    fs.writeFileSync('drift.txt', stdout);
-  } else {
-    console.log('No drift detected.');
-  }
-});
+} else {
+  shell.echo('No drift detected.');
+}
