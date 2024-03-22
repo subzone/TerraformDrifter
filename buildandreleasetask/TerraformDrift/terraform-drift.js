@@ -7,6 +7,8 @@ process.on('uncaughtException', function(err) {
 // The working directory is passed as the first argument
 let workingDirectory = process.argv[2];
 
+console.log('Working directory: ', workingDirectory);
+
 // Initialize Terraform
 let init = spawnSync('terraform', ['init'], { cwd: workingDirectory, stdio: 'inherit' });
 if (init.error) {
