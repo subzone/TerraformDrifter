@@ -1,9 +1,10 @@
 {
   "id": "4ff71419-e8e0-48a0-8a74-3b8bf2192af8",
   "name": "TerraformDrift",
-  "TaskName": "Terraform Drift",
-  "TaskDescription": "Checks for Terraform drift and enables reconciliation.",
+  "friendlyName": "Terraform Drift",
+  "description": "Checks for Terraform drift and enables reconciliation.",
   "author": "subzone",
+  "helpMarkDown" : "https://dev.azure.com/subzone/TerraformDrifter/_workitems/create/Bug",
   "category": "Utility",
   "visibility": [
     "Build",

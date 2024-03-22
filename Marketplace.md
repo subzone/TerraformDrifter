@@ -16,13 +16,13 @@ The Terraform Drift Azure DevOps Task is a custom task for Azure Pipelines that 
 
 ## Usage
 
-After installing the extension, you can add the Terraform Drift task to any of your pipelines. Currently task does not do installation of terraform, so that should be handled with task preceding TerraformDrift. Also this iteration supports only Azure deployments, aws and google will be supported soon.
+After installing the extension, you can add the Terraform Drift task to any of your pipelines. Currently task does not do installation of terraform, so that should be handled with task preceding TerraformDrift. Also this iteration supports only Azure deployments, aws and google is supported but not tested yet.
 
     - task: TerraformDrift@1
         inputs:
             workingDirectory: 'Your working dir where your terraform files are'
             provider: 'azure'  #can be aws or gcp as well
-            azureSubscription: 'Service Connection to Azure'` 
+            azureSubscription: 'Service Connection to Azure' #or other provider`  
 
 ## Support
 
