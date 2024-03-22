@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "terraform-drift",
   "publisher": "subzone",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "name": "TerraformDrift",
   "description": "An Azure DevOps task that checks for Terraform drift and enables reconciliation",
   "public": true,

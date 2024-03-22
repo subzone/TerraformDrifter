@@ -15,7 +15,7 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 16
+    "Patch": 17
   },
   "instanceNameFormat": "Check Terraform Drift",
   "inputs": [
@@ -28,7 +28,9 @@
       "helpMarkDown": "Path to the directory containing the Terraform files."
     }
   ],
-  "runsOn": ["Agent.OS -equals Linux"],
+  "runsOn": [
+    "Agent.OS -equals Linux"
+  ],
   "execution": {
     "Bash": {
       "target": "terraform-drift.sh",
