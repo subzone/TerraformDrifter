@@ -1,5 +1,5 @@
-const { spawnSync } = require('child_process');
-const tl = require('azure-pipelines-task-lib/task');
+import { spawnSync } from 'child_process';
+import * as tl from 'azure-pipelines-task-lib/task';
 
 let provider = tl.getInput('provider', true);
 let workingDirectory = tl.getInput('workingDirectory', true);
