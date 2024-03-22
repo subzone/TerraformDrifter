@@ -5,6 +5,7 @@
   "description": "Checks for Terraform drift and enables reconciliation.",
   "author": "subzone",
   "helpMarkDown" : "https://dev.azure.com/subzone/TerraformDrifter/_workitems/create/Bug",
+  "iconUrl": "https://subzone.gallerycdn.vsassets.io/extensions/subzone/terraform-drift/1.0.46/1711125992190/Microsoft.VisualStudio.Services.Icons.Default",
   "category": "Utility",
   "visibility": [
     "Build",
