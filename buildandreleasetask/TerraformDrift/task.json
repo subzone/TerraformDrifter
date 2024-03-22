@@ -1,8 +1,8 @@
 {
   "id": "4ff71419-e8e0-48a0-8a74-3b8bf2192af8",
   "name": "TerraformDrift",
-  "description": "$(TaskDescription)",
-  "friendlyName": "$(TaskName)",
+  "TaskName": "Terraform Drift",
+  "TaskDescription": "Checks for Terraform drift and enables reconciliation.",
   "author": "subzone",
   "category": "Utility",
   "visibility": [
