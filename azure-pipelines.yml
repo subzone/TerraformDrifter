@@ -1,12 +1,12 @@
 trigger: none
 
-pool:
-  vmImage: 'ubuntu-latest'
+
 
 jobs:
   - job: test
     displayName: Test job
-
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
       - checkout: self
 
