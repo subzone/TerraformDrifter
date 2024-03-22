@@ -28,10 +28,7 @@
       "helpMarkDown": "Path to the directory containing the Terraform files."
     }
   ],
-  "runsOn": [
-    "Agent",
-    "DeploymentGroup"
-  ],
+  "runsOn": ["Agent.OS -equals Linux"],
   "execution": {
     "Bash": {
       "target": "terraform-drift.sh",
