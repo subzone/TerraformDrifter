@@ -1,38 +1,71 @@
 const { spawnSync } = require('child_process');
-const mockProcess = require('jest-mock-process');
-const mockConsole = require('jest-mock-console');
+const tl = require('azure-pipelines-task-lib/task');
+const handleTerraformOperations = require('../terraform-drift.js');
 
-jest.mock('child_process');
+jest.mock('azure-pipelines-task-lib/task', () => ({
+  getInput: jest.fn().mockImplementation((name, required) => {
+    switch (name) {
+      case 'provider':
+        return 'azure';
+      case 'workingDirectory':
+        return 'terraform';
+      case 'autoReconcile':
+        return true;
+      default:
+        return null;
+    }
+  }),
+  getBoolInput: jest.fn().mockReturnValue(true),
+  getEndpointAuthorizationParameter: jest.fn().mockReturnValue('mock-value'),
+  getEndpointDataParameter: jest.fn().mockReturnValue('mock-value'),
+}));
 
-describe('Terraform Drift Detection', () => {
-  let mockExit;
-  let restoreConsole;
+jest.mock('child_process', () => ({
+  spawnSync: jest.fn().mockReturnValue({ error: null, status: 0 }),
+}));
+
+describe('handleTerraformOperations', () => {
+  beforeEach(() => {
+    // Clear all instances and calls to constructor and all methods:
+    spawnSync.mockClear();
+  });
 
   beforeEach(() => {
-    mockExit = mockProcess.mockProcessExit();
-    restoreConsole = mockConsole();
+    // Clear all instances and calls to constructor and all methods:
+    spawnSync.mockClear();
   });
 
-  afterEach(() => {
-    mockExit.mockRestore();
-    restoreConsole();
+  it('should call terraform init and plan', () => {
+    handleTerraformOperations('terraform');
+
+    expect(spawnSync).toHaveBeenCalledWith('terraform', ['init'], expect.anything());
+    expect(spawnSync).toHaveBeenCalledWith('terraform', ['plan', '-detailed-exitcode'], expect.anything());
   });
 
-  test('should exit with error if terraform plan fails', () => {
-    // Arrange
-    const plan = { error: true };
-
-    // Act
-    // Call your function here with plan as argument
-    spawnSync.mockImplementation(() => plan);
-
-    // Call your function here. For example, if your function is named `runTerraformPlan`:
-    runTerraformPlan(plan);
-
-    // Assert
-    expect(mockExit).toHaveBeenCalledWith(1);
-    expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Error: Terraform plan failed'));
+  it('should call terraform apply if there is drift and autoReconcile is true', () => {
+    tl.getBoolInput.mockReturnValueOnce(true);
+    spawnSync.mockImplementation((command, args) => {
+      if (args[0] === 'plan') {
+        return { error: null, status: 2 };
+      } else if (args[0] === 'apply') {
+        return { error: null, status: 2 };
+      } else {
+        return { error: null, status: 2 };
+      }
+    });
+  
+    handleTerraformOperations('terraform');
+  
+    expect(spawnSync).toHaveBeenCalledWith('terraform', ['apply', '-auto-approve'], expect.anything());
   });
 
-  // Add more tests for other branches of your code...
+  it('should not call terraform apply if there is no drift', () => {
+    spawnSync.mockReturnValueOnce({ error: null, status: 0 })
+      .mockReturnValueOnce({ error: null, status: 0 });
+
+    handleTerraformOperations('terraform');
+
+    expect(spawnSync).not.toHaveBeenCalledWith('terraform', ['apply', '-auto-approve'], expect.anything());
+  });
+  // Add more tests as needed...
 });

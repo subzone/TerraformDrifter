@@ -4,17 +4,18 @@
   "description": "",
   "main": "terraform-drift.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "subzone",
+  "license": "MIT",
   "dependencies": {
     "azure-pipelines-task-lib": "^4.10.1",
     "shelljs": "^0.8.5"
   },
   "devDependencies": {
     "jest": "^29.7.0",
+    "jest-mock-console": "^2.0.0",
     "jest-mock-process": "^2.0.0"
   }
 }

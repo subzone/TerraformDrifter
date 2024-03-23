@@ -1,5 +1,5 @@
-import { spawnSync } from 'child_process';
-import * as tl from 'azure-pipelines-task-lib/task';
+const { spawnSync } = require('child_process');
+const tl = require('azure-pipelines-task-lib/task');
 
 let provider = tl.getInput('provider', true);
 let workingDirectory = tl.getInput('workingDirectory', true);
@@ -84,3 +84,5 @@ function handleTerraformOperations(workingDirectory) {
     console.log('\x1b[32m%s\x1b[0m', 'No drift detected.');
   }
 }
+
+module.exports = handleTerraformOperations;
