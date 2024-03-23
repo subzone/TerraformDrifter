@@ -48,9 +48,9 @@ describe('handleTerraformOperations', () => {
       if (args[0] === 'plan') {
         return { error: null, status: 2 };
       } else if (args[0] === 'apply') {
-        return { error: null, status: 2 };
+        return { error: null, status: 0 };
       } else {
-        return { error: null, status: 2 };
+        return { error: null, status: 0 };
       }
     });
   
