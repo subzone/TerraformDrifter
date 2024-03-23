@@ -2,20 +2,20 @@
   "name": "terraformdrifter",
   "version": "1.0.0",
   "description": "This is an Azure DevOps task that checks for Terraform drift and enables reconciliation.",
-  "main": "index.js",
+  "main": "terraform-drift.js",
   "directories": {
     "example": "example"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
     "url": "https://subzone.visualstudio.com/TerraformDrifter/_git/TerraformDrifter"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "subzone",
+  "license": "MIT",
   "dependencies": {
     "shelljs": "^0.8.5"
   }
