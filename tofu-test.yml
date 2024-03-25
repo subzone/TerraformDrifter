@@ -16,7 +16,8 @@ jobs:
       - script: |
           echo Verifying tofu...
           command -v tofu >/dev/null 2>&1 || { echo >&2 "Tofu is not installed or not available globally. Aborting."; exit 1; }
-          export PATH=$PATH:/snap/bin
+          echo 'export PATH=$PATH:/snap/bin' >> ~/.bashrc
+          source ~/.bashrc
         displayName: 'Verify tofu'
 
       - script: |
