@@ -1,0 +1,62 @@
+name: CI
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install tfx-cli
+      run: npm install -g tfx-cli
+
+    - name: Increment Patch version
+      run: |
+        PATCH=$(cat Patch.txt)
+        PATCH=$((PATCH + 1))
+        echo $PATCH > Patch.txt
+
+    - name: Update version based on repository tag
+      run: |
+        VERSION=$(cat Major.txt).$(cat Minor.txt).$(cat Patch.txt)
+        jq '.version = "'$VERSION'"' vss-extension.json > temp.json && mv temp.json vss-extension.json
+
+    - name: Update task.json version based on Major, Minor and Patch files
+      run: |
+        MAJOR=$(cat Major.txt)
+        MINOR=$(cat Minor.txt)
+        PATCH=$(cat Patch.txt)
+        jq '.version.Major = '$MAJOR'' buildandreleasetask/TerraformDrift/task.json > temp.json && mv temp.json buildandreleasetask/TerraformDrift/task.json
+        jq '.version.Minor = '$MINOR'' buildandreleasetask/TerraformDrift/task.json > temp.json && mv temp.json buildandreleasetask/TerraformDrift/task.json
+        jq '.version.Patch = '$PATCH'' buildandreleasetask/TerraformDrift/task.json > temp.json && mv temp.json buildandreleasetask/TerraformDrift/task.json
+
+    - name: Build webpack
+      run: |
+        cd buildandreleasetask/TerraformDrift
+        npm install
+        webpack
+
+    - name: Build Extension
+      run: tfx extension create --manifest-globs vss-extension.json
+
+    - name: Publish Extension
+      run: tfx extension publish --manifest-globs vss-extension.json --token ${{ secrets.PAT }}
+
+    - name: Remove .vsix files
+      run: rm -f *.vsix
+
+    - name: Commit to master branch
+      run: |
+        git config --global user.email "subzone@live.com"
+        git config --global user.name "Milenko Mitrovic"
+        git remote set-url origin https://github.com/subzone/TerraformDrifter.git
+        git add .
+        whoami
+        VERSION=$(cat Major.txt).$(cat Minor.txt).$(cat Patch.txt)
+        git tag $VERSION
+        git commit -m "Update version based on repository tag"
+        git push origin HEAD:master
+        git push origin --tags
