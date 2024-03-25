@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="0" errors="0" time="0.396">
-  <testsuite name="handleTerraformOperations" errors="0" failures="0" skipped="0" timestamp="2024-03-25T13:19:14" time="0.365" tests="3">
-    <testcase classname="handleTerraformOperations should call terraform init and plan" name="handleTerraformOperations should call terraform init and plan" time="0.006">
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="0.4">
+  <testsuite name="handleTerraformOperations" errors="0" failures="0" skipped="0" timestamp="2024-03-25T13:25:32" time="0.368" tests="3">
+    <testcase classname="handleTerraformOperations should call terraform init and plan" name="handleTerraformOperations should call terraform init and plan" time="0.011">
     </testcase>
     <testcase classname="handleTerraformOperations should call terraform apply if there is drift and autoReconcile is true" name="handleTerraformOperations should call terraform apply if there is drift and autoReconcile is true" time="0.003">
     </testcase>
