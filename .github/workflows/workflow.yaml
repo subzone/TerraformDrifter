@@ -74,6 +74,9 @@ jobs:
     - name: Remove .vsix files
       run: rm -f *.vsix
 
+    - name: Remove .vsix files
+      run: rm -f buildandreleasetask/TerraformDrift/node_modules
+
     - name: Commit to master branch
       run: |
         git config --global user.email "subzone@live.com"
