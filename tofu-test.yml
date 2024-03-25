@@ -1,7 +1,5 @@
 trigger: none
 
-
-
 jobs:
   - job: test
     displayName: Test job
@@ -19,6 +17,13 @@ jobs:
           echo Verifying tofu...
           command -v tofu >/dev/null 2>&1 || { echo >&2 "Tofu is not installed or not available globally. Aborting."; exit 1; }
         displayName: 'Verify tofu'
+
+      - script: |
+          echo Determining tofu installation location...
+          which tofu
+        displayName: 'Determine tofu installation location'
+
+      
       
       - task: TerraformDrift@1
         inputs:
