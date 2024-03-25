@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
+    "jest-junit": "^16.0.0",
     "jest-mock-console": "^2.0.0",
     "jest-mock-process": "^2.0.0"
   }
