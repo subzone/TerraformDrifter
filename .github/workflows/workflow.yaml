@@ -37,19 +37,19 @@ jobs:
       run: |
         cd buildandreleasetask/TerraformDrift
         npm install
-        npm install --save-dev jest  # Ensure Jest is installed
+        npm install --save-dev jest-junit # Ensure Jest is installed
         chmod +x node_modules/.bin/jest  # Ensure Jest is executable
   
     - name: Run unit tests
       run: |
         cd buildandreleasetask/TerraformDrift
-        npm test
+        npm test -- --reporters=default --reporters=jest-junit  # Generate JUnit report
 
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.PUSH_TOKEN }}
         files: buildandreleasetask/TerraformDrift/junit.xml
     
     - name: Build webpack
@@ -62,7 +62,7 @@ jobs:
       run: tfx extension create --manifest-globs vss-extension.json
 
     - name: Publish Extension
-      run: tfx extension publish --manifest-globs vss-extension.json --token ${{ secrets.PAT }}
+      run: tfx extension publish --manifest-globs vss-extension.json --token ${{ secrets.MARKETPLACE_PUSH }}
 
     - name: Remove .vsix files
       run: rm -f *.vsix
