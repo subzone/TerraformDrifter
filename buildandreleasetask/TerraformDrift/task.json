@@ -20,12 +20,24 @@
   "instanceNameFormat": "Check Terraform Drift",
   "inputs": [
     {
+      "name": "tool",
+      "type": "pickList",
+      "label": "Infra Tool",
+      "defaultValue": "terraform",
+      "required": true,
+      "options": {
+        "terraform": "Terraform",
+        "tofu": "Tofu"
+      },
+      "helpMarkDown": "Select the Infra Tool for your drifter."
+    },
+    {
       "name": "workingDirectory",
       "type": "filePath",
       "label": "Working Directory",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown": "Path to the directory containing the Terraform files."
+      "helpMarkDown": "Path to the directory containing the Terraform/Tofu files."
     },
     {
       "name": "provider",

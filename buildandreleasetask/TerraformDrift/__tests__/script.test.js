@@ -72,5 +72,44 @@ describe('handleTerraformOperations', () => {
     expect(spawnSync).not.toHaveBeenCalledWith('terraform',
         ['apply', '-auto-approve'], expect.anything());
   });
-  // Add more tests as needed...
+  
+  it('should call tofu init and plan', () => {
+    handleTTofuOperations('tofu');
+
+    expect(spawnSync).toHaveBeenCalledWith('tofu',
+        ['init'], expect.anything());
+    expect(spawnSync).toHaveBeenCalledWith('tofu',
+        ['plan', '-detailed-exitcode'], expect.anything());
+  });
+
+  it('should call tofu apply if there is drift and autoReconcile is true',
+      () => {
+        tl.getBoolInput.mockReturnValueOnce(true);
+        spawnSync.mockImplementation((command, args) => {
+          if (args[0] === 'plan') {
+            return {error: null, status: 2};
+          } else if (args[0] === 'apply') {
+            return {error: null, status: 0};
+          } else {
+            return {error: null, status: 0};
+          }
+        });
+
+        handleTofuOperations('tofu');
+
+        expect(spawnSync).toHaveBeenCalledWith('tofu',
+            ['apply', '-auto-approve'], expect.anything());
+      });
+
+  it('should not call tofu apply if there is no drift', () => {
+    spawnSync.mockReturnValueOnce({error: null, status: 0})
+        .mockReturnValueOnce({error: null, status: 0});
+
+    handleTofuOperations('tofu');
+
+    expect(spawnSync).not.toHaveBeenCalledWith('tofu',
+        ['apply', '-auto-approve'], expect.anything());
+  });
+
+
 });
