@@ -14,19 +14,14 @@ function handleTofuOperations(workingDirectory) {
     console.log('Working directory: ', workingDirectory);
   
     // Initialize tofu
-    const init = spawnSync('tofu',
-        ['init'], {cwd: workingDirectory, stdio: 'inherit'});
+    const init = spawnSync('docker', ['run', `--workdir=${workingDirectory}`, '--mount type=bind',`source=${workingDirectory}`, `target=${workingDirectory}`, 'ghcr.io/opentofu/opentofu:latest', 'init'], { stdio: 'inherit' });
     if (init.error) {
-      console.error('\x1b[31m%s\x1b[0m',
-          'Error: tofu init failed');
+      console.error('\x1b[31m%s\x1b[0m', 'Error: tofu init failed');
       process.exit(1);
     }
   
     // Check for drift
-    const plan = spawnSync('tofu', ['plan',
-      '-detailed-exitcode'],
-    {cwd: workingDirectory, stdio: 'inherit'});
-  
+    const plan = spawnSync('docker', ['run', `--workdir=${workingDirectory}`, '--mount type=bind',`\source=${workingDirectory}`, `${workingDirectory}`, 'ghcr.io/opentofu/opentofu:latest', 'plan', '-detailed-exitcode'], { stdio: 'inherit' });
     if (plan.error) {
       console.error('\x1b[31m%s\x1b[0m', 'Error: tofu plan failed');
       process.exit(1);
