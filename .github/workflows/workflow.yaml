@@ -48,7 +48,6 @@ jobs:
       if: always()
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-      working-directory: buildandreleasetask/TerraformDrift
     
     - name: Build webpack
       run: |
