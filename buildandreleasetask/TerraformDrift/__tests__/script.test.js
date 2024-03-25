@@ -1,4 +1,4 @@
-const { spawnSync } = require('child_process');
+const {spawnSync} = require('child_process');
 const tl = require('azure-pipelines-task-lib/task');
 const handleTerraformOperations = require('../terraform-drift.js');
 
@@ -21,7 +21,7 @@ jest.mock('azure-pipelines-task-lib/task', () => ({
 }));
 
 jest.mock('child_process', () => ({
-  spawnSync: jest.fn().mockReturnValue({ error: null, status: 0 }),
+  spawnSync: jest.fn().mockReturnValue({error: null, status: 0}),
 }));
 
 describe('handleTerraformOperations', () => {
@@ -38,34 +38,39 @@ describe('handleTerraformOperations', () => {
   it('should call terraform init and plan', () => {
     handleTerraformOperations('terraform');
 
-    expect(spawnSync).toHaveBeenCalledWith('terraform', ['init'], expect.anything());
-    expect(spawnSync).toHaveBeenCalledWith('terraform', ['plan', '-detailed-exitcode'], expect.anything());
+    expect(spawnSync).toHaveBeenCalledWith('terraform',
+        ['init'], expect.anything());
+    expect(spawnSync).toHaveBeenCalledWith('terraform',
+        ['plan', '-detailed-exitcode'], expect.anything());
   });
 
-  it('should call terraform apply if there is drift and autoReconcile is true', () => {
-    tl.getBoolInput.mockReturnValueOnce(true);
-    spawnSync.mockImplementation((command, args) => {
-      if (args[0] === 'plan') {
-        return { error: null, status: 2 };
-      } else if (args[0] === 'apply') {
-        return { error: null, status: 0 };
-      } else {
-        return { error: null, status: 0 };
-      }
-    });
-  
-    handleTerraformOperations('terraform');
-  
-    expect(spawnSync).toHaveBeenCalledWith('terraform', ['apply', '-auto-approve'], expect.anything());
-  });
+  it('should call terraform apply if there is drift and autoReconcile is true',
+      () => {
+        tl.getBoolInput.mockReturnValueOnce(true);
+        spawnSync.mockImplementation((command, args) => {
+          if (args[0] === 'plan') {
+            return {error: null, status: 2};
+          } else if (args[0] === 'apply') {
+            return {error: null, status: 0};
+          } else {
+            return {error: null, status: 0};
+          }
+        });
+
+        handleTerraformOperations('terraform');
+
+        expect(spawnSync).toHaveBeenCalledWith('terraform',
+            ['apply', '-auto-approve'], expect.anything());
+      });
 
   it('should not call terraform apply if there is no drift', () => {
-    spawnSync.mockReturnValueOnce({ error: null, status: 0 })
-      .mockReturnValueOnce({ error: null, status: 0 });
+    spawnSync.mockReturnValueOnce({error: null, status: 0})
+        .mockReturnValueOnce({error: null, status: 0});
 
     handleTerraformOperations('terraform');
 
-    expect(spawnSync).not.toHaveBeenCalledWith('terraform', ['apply', '-auto-approve'], expect.anything());
+    expect(spawnSync).not.toHaveBeenCalledWith('terraform',
+        ['apply', '-auto-approve'], expect.anything());
   });
   // Add more tests as needed...
 });
