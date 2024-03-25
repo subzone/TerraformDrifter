@@ -12,7 +12,7 @@ jobs:
 
       - script: |
           echo Installing tofu...
-          snap install --classic opentofu
+          sudo snap install --classic opentofu
         displayName: 'Install tofu'
 
       - script: |
