@@ -75,7 +75,7 @@ jobs:
       run: rm -f *.vsix
 
     - name: Remove .vsix files
-      run: rm -f buildandreleasetask/TerraformDrift/node_modules
+      run: rm -rf buildandreleasetask/TerraformDrift/node_modules/
 
     - name: Commit to master branch
       run: |
