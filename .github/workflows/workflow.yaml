@@ -33,6 +33,20 @@ jobs:
         jq '.version.Minor = '$MINOR'' buildandreleasetask/TerraformDrift/task.json > temp.json && mv temp.json buildandreleasetask/TerraformDrift/task.json
         jq '.version.Patch = '$PATCH'' buildandreleasetask/TerraformDrift/task.json > temp.json && mv temp.json buildandreleasetask/TerraformDrift/task.json
 
+        - name: Install dependencies
+        run: |
+          cd buildandreleasetask/TerraformDrift
+          npm install
+  
+    - name: Run unit tests
+      run: npm test
+
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    
     - name: Build webpack
       run: |
         cd buildandreleasetask/TerraformDrift
