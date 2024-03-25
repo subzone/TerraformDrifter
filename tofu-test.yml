@@ -12,12 +12,9 @@ jobs:
 
       - script: |
           echo Installing tofu...
-          curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh
-          chmod +x install-opentofu.sh
-          ./install-opentofu.sh --install-method deb
-          rm install-opentofu.sh
+          snap install --classic opentofu
         displayName: 'Install tofu'
-        
+
       - script: |
           echo Verifying tofu...
           command -v tofu >/dev/null 2>&1 || { echo >&2 "Tofu is not installed or not available globally. Aborting."; exit 1; }
