@@ -45,10 +45,6 @@
     {
       "path": "buildandreleasetask/TerraformDrift/terraform-drift.bundle.js",
       "contentType": "application/javascript"
-    },
-    {
-      "path": "buildandreleasetask/TerraformDrift/node_modules",
-      "addressable": true
     }
   ],
   "feedback": {
