@@ -51,11 +51,14 @@ steps:
   - script: |
       git config --global user.email "subzone@live.com"
       git config --global user.name "Milenko Mitrovic"
-      git remote set-url origin https://subzone:$(PAT)@subzone.visualstudio.com/TerraformDrifter/_git/TerraformDrifter
+      git remote set-url origin https://github.com/subzone/TerraformDrifter.git
       git add .
       whoami
+      VERSION=$(cat Major.txt).$(cat Minor.txt).$(cat Patch.txt)
+      git tag $VERSION
       git commit -m "Update version based on repository tag"
       git push origin HEAD:master
+      git push origin --tags
     displayName: 'Commit to master branch'
 
   

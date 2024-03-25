@@ -60,7 +60,7 @@ stages:
 
 ## Support
 
-If you encounter any issues or have any questions, please open an issue here https://dev.azure.com/subzone/TerraformDrifter/_workitems/create/Bug .
+If you encounter any issues or have any questions, please open an issue here https://github.com/subzone/TerraformDrifter/issues 
 
 ## License
 
