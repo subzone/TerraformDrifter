@@ -1,0 +1,23 @@
+trigger: none
+
+
+
+jobs:
+  - job: test
+    displayName: Test job
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - checkout: self
+
+      - script: |
+          echo Installing tofu...
+          pip install tofu
+        displayName: 'Install tofu'
+      
+      - task: TerraformDrift@1
+        inputs:
+          workingDirectory: '$(System.DefaultWorkingDirectory)/tofu'
+          provider: 'azure'
+          azureSubscription: 'Azure subscription 1(836dac06-9190-4ca2-980f-c1fa69e59375)'
+          autoReconcile: false
