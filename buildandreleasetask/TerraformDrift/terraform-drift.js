@@ -4,6 +4,7 @@ const handleTerraformOperations = require('./operations/handleTerraformOperation
 const handleTofuOperations = require('./operations/handleTofuOperations');
 
 const provider = tl.getInput('provider', true);
+const tool = tl.getInput('tool', true);
 const workingDirectory = tl.getInput('workingDirectory', true);
 const autoReconcile = tl.getBoolInput('autoReconcile', false);
 
@@ -36,7 +37,7 @@ switch (provider) {
 
     console.log('Tenant ID: ', tenantId);
 
-    handleTerraformOperations(workingDirectory);
+    handleOperations(tool, workingDirectory);
 
     break;
 
@@ -49,7 +50,7 @@ switch (provider) {
 
     process.env['AWS_ACCESS_KEY_ID'] = accessKeyId;
     process.env['AWS_SECRET_ACCESS_KEY'] = secretAccessKey;
-    handleTerraformOperations(workingDirectory);
+    handleOperations(tool, workingDirectory);
     break;
 
   case 'gcp':
@@ -58,7 +59,7 @@ switch (provider) {
         'keyfile', false);
 
     process.env['GOOGLE_APPLICATION_CREDENTIALS'] = keyFile;
-    handleTerraformOperations(workingDirectory);
+    handleOperations(tool, workingDirectory);
     break;
 
   default:

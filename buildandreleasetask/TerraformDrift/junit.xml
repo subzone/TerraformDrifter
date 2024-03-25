@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="0" errors="0" time="0.405">
-  <testsuite name="handleTerraformOperations" errors="0" failures="0" skipped="0" timestamp="2024-03-25T16:32:55" time="0.373" tests="3">
-    <testcase classname="handleTerraformOperations should call terraform init and plan" name="handleTerraformOperations should call terraform init and plan" time="0.006">
+<testsuites name="jest tests" tests="6" failures="0" errors="0" time="0.648">
+  <testsuite name="handleOperations" errors="0" failures="0" skipped="0" timestamp="2024-03-25T20:38:22" time="0.547" tests="6">
+    <testcase classname="handleOperations should call terraform init and plan" name="handleOperations should call terraform init and plan" time="0.022">
     </testcase>
-    <testcase classname="handleTerraformOperations should call terraform apply if there is drift and autoReconcile is true" name="handleTerraformOperations should call terraform apply if there is drift and autoReconcile is true" time="0.003">
+    <testcase classname="handleOperations should call terraform apply if there is drift and autoReconcile is true" name="handleOperations should call terraform apply if there is drift and autoReconcile is true" time="0.007">
     </testcase>
-    <testcase classname="handleTerraformOperations should not call terraform apply if there is no drift" name="handleTerraformOperations should not call terraform apply if there is no drift" time="0.003">
+    <testcase classname="handleOperations should not call terraform apply if there is no drift" name="handleOperations should not call terraform apply if there is no drift" time="0.005">
+    </testcase>
+    <testcase classname="handleOperations should call tofu init and plan" name="handleOperations should call tofu init and plan" time="0.007">
+    </testcase>
+    <testcase classname="handleOperations should call tofu apply if there is drift and autoReconcile is true" name="handleOperations should call tofu apply if there is drift and autoReconcile is true" time="0.005">
+    </testcase>
+    <testcase classname="handleOperations should not call tofu apply if there is no drift" name="handleOperations should not call tofu apply if there is no drift" time="0.004">
     </testcase>
   </testsuite>
 </testsuites>

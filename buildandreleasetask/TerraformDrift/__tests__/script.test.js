@@ -1,6 +1,8 @@
 const {spawnSync} = require('child_process');
 const tl = require('azure-pipelines-task-lib/task');
-const handleTerraformOperations = require('../terraform-drift.js');
+// const handleOperations = require('../terraform-drift.js');
+const handleTerraformOperations = require('../operations/handleTerraformOperations.js');
+const handleTofuOperations = require('../operations/handleTofuOperations.js')
 
 jest.mock('azure-pipelines-task-lib/task', () => ({
   getInput: jest.fn().mockImplementation((name, required) => {
@@ -24,7 +26,7 @@ jest.mock('child_process', () => ({
   spawnSync: jest.fn().mockReturnValue({error: null, status: 0}),
 }));
 
-describe('handleTerraformOperations', () => {
+describe('handleOperations', () => {
   beforeEach(() => {
     // Clear all instances and calls to constructor and all methods:
     spawnSync.mockClear();
@@ -74,7 +76,7 @@ describe('handleTerraformOperations', () => {
   });
   
   it('should call tofu init and plan', () => {
-    handleTTofuOperations('tofu');
+    handleTofuOperations('tofu');
 
     expect(spawnSync).toHaveBeenCalledWith('tofu',
         ['init'], expect.anything());
