@@ -87,14 +87,17 @@ jobs:
         git push origin HEAD:master
         git push origin --tags
 
+    - name: Get version
+      id: get_version
+      run: echo "::set-output name=version::$(cat Major.txt).$(cat Minor.txt).$(cat Patch.txt)"
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        VERSION: $(cat Major.txt).$(cat Minor.txt).$(cat Patch.txt)
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
       with:
-        tag_name: ${{ env.VERSION }}
-        release_name: Release ${{ env.VERSION }}
+        tag_name: ${{ steps.get_version.outputs.version }}
+        release_name: Release ${{ steps.get_version.outputs.version }}
         draft: false
         prerelease: false
