@@ -43,7 +43,7 @@ jobs:
     - name: Run unit tests
       run: |
         cd buildandreleasetask/TerraformDrift
-        npm test --reporters=default --reporters=jest-junit
+        npm test
 
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
