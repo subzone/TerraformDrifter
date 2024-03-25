@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="0" errors="0" time="0.396">
-  <testsuite name="handleTerraformOperations" errors="0" failures="0" skipped="0" timestamp="2024-03-25T10:01:16" time="0.365" tests="3">
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="0.394">
+  <testsuite name="handleTerraformOperations" errors="0" failures="0" skipped="0" timestamp="2024-03-25T10:41:01" time="0.363" tests="3">
     <testcase classname="handleTerraformOperations should call terraform init and plan" name="handleTerraformOperations should call terraform init and plan" time="0.006">
     </testcase>
-    <testcase classname="handleTerraformOperations should call terraform apply if there is drift and autoReconcile is true" name="handleTerraformOperations should call terraform apply if there is drift and autoReconcile is true" time="0.002">
+    <testcase classname="handleTerraformOperations should call terraform apply if there is drift and autoReconcile is true" name="handleTerraformOperations should call terraform apply if there is drift and autoReconcile is true" time="0.003">
     </testcase>
-    <testcase classname="handleTerraformOperations should not call terraform apply if there is no drift" name="handleTerraformOperations should not call terraform apply if there is no drift" time="0.003">
+    <testcase classname="handleTerraformOperations should not call terraform apply if there is no drift" name="handleTerraformOperations should not call terraform apply if there is no drift" time="0.002">
     </testcase>
   </testsuite>
 </testsuites>
