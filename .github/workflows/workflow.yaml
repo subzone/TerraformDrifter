@@ -37,6 +37,8 @@ jobs:
       run: |
         cd buildandreleasetask/TerraformDrift
         npm install
+        npm install --save-dev jest  # Ensure Jest is installed
+        chmod +x node_modules/.bin/jest  # Ensure Jest is executable
   
     - name: Run unit tests
       run: |
