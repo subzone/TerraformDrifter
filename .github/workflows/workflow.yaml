@@ -64,6 +64,13 @@ jobs:
     - name: Publish Extension
       run: tfx extension publish --manifest-globs vss-extension.json --token ${{ secrets.MARKETPLACE_PUSH }}
 
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: vsix-artifact
+        path: |
+          **/*.vsix
+
     - name: Remove .vsix files
       run: rm -f *.vsix
 
