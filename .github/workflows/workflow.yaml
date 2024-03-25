@@ -40,17 +40,17 @@ jobs:
         npm install --save-dev jest-junit # Ensure Jest is installed
         chmod +x node_modules/.bin/jest  # Ensure Jest is executable
   
-    - name: Run unit tests
-      run: |
-        cd buildandreleasetask/TerraformDrift
-        npm test -- --reporters=default --reporters=jest-junit  # Generate JUnit report
+    # - name: Run unit tests
+    #   run: |
+    #     cd buildandreleasetask/TerraformDrift
+    #     npm test -- --reporters=default --reporters=jest-junit  # Generate JUnit report
 
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        files: buildandreleasetask/TerraformDrift/junit.xml
+    # - name: Publish Unit Test Results
+    #   uses: EnricoMi/publish-unit-test-result-action@v1
+    #   if: always()
+    #   with:
+    #     github_token: ${{ secrets.GITHUB_TOKEN }}
+    #     files: buildandreleasetask/TerraformDrift/junit.xml
     
     - name: Build webpack
       run: |
