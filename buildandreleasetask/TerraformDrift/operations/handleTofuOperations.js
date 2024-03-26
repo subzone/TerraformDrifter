@@ -77,7 +77,7 @@ function handleTofuOperations(workingDirectory) {
           `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
           `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
           `--workdir=${absoluteWorkingDirectory}`,
-          `-v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`,
+          `-v /${absoluteWorkingDirectory}:/${absoluteWorkingDirectory}`,
           'ghcr.io/subzone/opentofu:latest' 
         ];
         console.log('Docker command: docker', 'run', ...applyArgs);
