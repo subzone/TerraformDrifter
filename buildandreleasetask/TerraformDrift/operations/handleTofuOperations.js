@@ -22,7 +22,11 @@ function handleTofuOperations(workingDirectory) {
     ` --workdir=${absoluteWorkingDirectory}`, ` -v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`,
     'ghcr.io/subzone/opentofu:latest', 'init'],
     { stdio: 'inherit' });
-    console.log(init.stdout.toString());
+    if (init.stdout) {
+      console.log(init.stdout.toString());
+    } else {
+      console.error('Docker command failed with error: ', init.error);
+    }
     if (init.error) {
       console.error('\x1b[31m%s\x1b[0m', 'Error: tofu init failed');
       process.exit(1);
@@ -34,7 +38,11 @@ function handleTofuOperations(workingDirectory) {
     ` --workdir=${absoluteWorkingDirectory}`, ` -v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`,
     'ghcr.io/subzone/opentofu:latest', 'plan', '-detailed-exitcode'],
      { stdio: 'inherit' });
-     console.log(plan.stdout.toString());
+     if (plan.stdout) {
+      console.log(plan.stdout.toString());
+    } else {
+      console.error('Docker command failed with error: ', plan.error);
+    }
     if (plan.error) {
       console.error('\x1b[31m%s\x1b[0m', 'Error: tofu plan failed');
       process.exit(1);
@@ -51,7 +59,11 @@ function handleTofuOperations(workingDirectory) {
         ` --workdir=${absoluteWorkingDirectory}`, ` -v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'apply',
           '-auto-approve'],
         {cwd: workingDirectory, stdio: 'inherit'});
-        console.log(apply.stdout.toString());
+        if (apply.stdout) {
+          console.log(apply.stdout.toString());
+        } else {
+          console.error('Docker command failed with error: ', apply.error);
+        }
         if (apply.error) {
           console.error('Error: tofu apply failed');
           process.exit(1);
