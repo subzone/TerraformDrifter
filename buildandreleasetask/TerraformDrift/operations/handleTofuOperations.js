@@ -71,11 +71,17 @@ function handleTofuOperations(workingDirectory) {
             'Drift detected.',
             ' AutoReconciliation parameter set to true.',
             'Reconciling...');
-        const apply = spawnSync('docker', [ 'run', 
-        `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`, 
-        ` --workdir=${absoluteWorkingDirectory}`, `-v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'apply',
-          '-auto-approve'],
-        {cwd: workingDirectory, stdio: 'inherit'});
+        const applyArgs = [
+          `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID}`,
+          `-e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET}`,
+          `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
+          `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
+          `--workdir=${absoluteWorkingDirectory}`,
+          `-v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`,
+          'ghcr.io/subzone/opentofu:latest' 
+        ];
+        console.log('Docker command: docker', 'run', ...applyArgs);
+        const apply = spawnSync('docker', ['run', ...applyArgs, 'apply', '-auto-approve' ], { cwd: workingDirectory, stdio: 'inherit' });
         if (apply.stdout) {
           console.log(apply.stdout.toString());
         } else {
