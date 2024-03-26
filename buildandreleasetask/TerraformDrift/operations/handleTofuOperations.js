@@ -17,11 +17,19 @@ function handleTofuOperations(workingDirectory) {
     console.log('Absolute working directory: ', absoluteWorkingDirectory);
   
     // Initialize tofu
-    const init = spawnSync('docker', ['run', 
-    `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
-    ` --workdir=${absoluteWorkingDirectory}`, ` -v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`,
-    'ghcr.io/subzone/opentofu:latest', 'init'],
-    { stdio: 'inherit' });
+    const initArgs = [
+      'run',
+      `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID}`,
+      `-e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET}`,
+      `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
+      `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
+      `--workdir=${workingDirectory}`,
+      `-v ${absoluteWorkingDirectory}:${workingDirectory}`,
+      'ghcr.io/subzone/opentofu:latest',
+      'init'
+    ];
+    console.log('Docker command: docker', initargs)
+    const init = spawnSync('docker', initArgs, { stdio: 'inherit' });
     if (init.stdout) {
       console.log(init.stdout.toString());
     } else {
@@ -33,11 +41,20 @@ function handleTofuOperations(workingDirectory) {
     }
   
     // Check for drift
-    const plan = spawnSync('docker', ['run',
-    `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
-    ` --workdir=${absoluteWorkingDirectory}`, ` -v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`,
-    'ghcr.io/subzone/opentofu:latest', 'plan', '-detailed-exitcode'],
-     { stdio: 'inherit' });
+    const dockerArgs = [
+      'run',
+      `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID}`,
+      `-e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET}`,
+      `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
+      `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
+      `--workdir=${workingDirectory}`,
+      `-v ${absoluteWorkingDirectory}:${workingDirectory}`,
+      'ghcr.io/subzone/opentofu:latest',
+      'plan',
+      '-detailed-exitcode'
+    ];
+    console.log('Docker command: docker', dockerArgs)
+    const plan = spawnSync('docker', dockerArgs, { stdio: 'inherit' });
      if (plan.stdout) {
       console.log(plan.stdout.toString());
     } else {
