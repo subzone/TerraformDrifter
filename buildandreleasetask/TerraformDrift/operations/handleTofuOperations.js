@@ -1,9 +1,10 @@
-const { exec } = require('child_process');
+const Docker = require('dockerode');
 const tl = require('azure-pipelines-task-lib/task');
 const fs = require('fs');
 const path = require('path');
 
 const autoReconcile = tl.getBoolInput('autoReconcile', false);
+const docker = new Docker();
 
 function handleTofuOperations(workingDirectory) {
     console.log('Working directory: ', workingDirectory);
@@ -11,45 +12,42 @@ function handleTofuOperations(workingDirectory) {
     const absoluteWorkingDirectory = path.resolve(workingDirectory).trim();
     console.log('Absolute working directory: ', absoluteWorkingDirectory);
 
-    const dockerCommand = `docker run -e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${process.env.ARM_TENANT_ID} --workdir=/app -v ${absoluteWorkingDirectory.trim()}:/app ghcr.io/subzone/opentofu:latest`;
+    const dockerOptions = {
+        Image: 'ghcr.io/subzone/opentofu:latest',
+        Env: [
+            `ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID}`,
+            `ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET}`,
+            `ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
+            `ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`
+        ],
+        WorkingDir: '/app',
+        HostConfig: {
+            Binds: [`${absoluteWorkingDirectory.trim()}:/app`]
+        }
+    };
 
-    exec(`${dockerCommand} init`, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error: ${error.message}`);
+    docker.run(dockerOptions, ['init'], process.stdout, function (err, data, container) {
+        if (err) {
+            console.error(`Error: ${err.message}`);
             return;
         }
-        if (stderr) {
-            console.error(`Stderr: ${stderr}`);
-            return;
-        }
-        console.log(`Stdout: ${stdout}`);
         console.log('Init command completed');
 
-        exec(`${dockerCommand} plan -detailed-exitcode`, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`Error: ${error.message}`);
+        docker.run(dockerOptions, ['plan', '-detailed-exitcode'], process.stdout, function (err, data, container) {
+            if (err) {
+                console.error(`Error: ${err.message}`);
                 return;
             }
-            if (stderr) {
-                console.error(`Stderr: ${stderr}`);
-                return;
-            }
-            console.log(`Stdout: ${stdout}`);
             console.log('Plan command completed');
 
-            if (stdout.includes('exit code 2')) {
+            if (data.StatusCode === 2) {
                 if (autoReconcile) {
                     console.log('Drift detected. AutoReconciliation parameter set to true. Reconciling...');
-                    exec(`${dockerCommand} apply -auto-approve`, (error, stdout, stderr) => {
-                        if (error) {
-                            console.error(`Error: ${error.message}`);
+                    docker.run(dockerOptions, ['apply', '-auto-approve'], process.stdout, function (err, data, container) {
+                        if (err) {
+                            console.error(`Error: ${err.message}`);
                             return;
                         }
-                        if (stderr) {
-                            console.error(`Stderr: ${stderr}`);
-                            return;
-                        }
-                        console.log(`Stdout: ${stdout}`);
                         console.log('Apply command completed');
                     });
                 } else {
