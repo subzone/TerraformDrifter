@@ -14,14 +14,14 @@ function handleTofuOperations(workingDirectory) {
     console.log('Working directory: ', workingDirectory);
   
     // Initialize tofu
-    const init = spawnSync('docker', ['docker', ['run', `-e ARM_CLIENT_ID=${ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${ARM_TENANT_ID}`, `--workdir=/${workingDirectory}`, `--mount type=bind,source=./${workingDirectory},target=/${workingDirectory}`, 'ghcr.io/opentofu/opentofu:latest', 'init'], { stdio: 'inherit' });
+    const init = spawnSync('docker', ['run', `-e ARM_CLIENT_ID=${ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${ARM_TENANT_ID}`, `--workdir=/${workingDirectory}`, `--mount type=bind,source=./${workingDirectory},target=/${workingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'init'], { stdio: 'inherit' });
     if (init.error) {
       console.error('\x1b[31m%s\x1b[0m', 'Error: tofu init failed');
       process.exit(1);
     }
   
     // Check for drift
-    const plan = spawnSync('docker', ['run', `-e ARM_CLIENT_ID=${ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${ARM_TENANT_ID}`, `--workdir=/${workingDirectory}`, `--mount type=bind,source=./${workingDirectory},target=/${workingDirectory}`, 'ghcr.io/opentofu/opentofu:latest', 'plan', '-detailed-exitcode'], { stdio: 'inherit' });
+    const plan = spawnSync('docker', ['run', `-e ARM_CLIENT_ID=${ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${ARM_TENANT_ID}`, `--workdir=/${workingDirectory}`, `--mount type=bind,source=./${workingDirectory},target=/${workingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'plan', '-detailed-exitcode'], { stdio: 'inherit' });
     if (plan.error) {
       console.error('\x1b[31m%s\x1b[0m', 'Error: tofu plan failed');
       process.exit(1);
