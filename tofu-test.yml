@@ -10,7 +10,10 @@ jobs:
       - task: DockerInstaller@0
         inputs:
           dockerVersion: '26.0.0'
-       
+      - script: |
+          sudo usermod -aG docker $USER
+          docker info
+        displayName: 'Add user to Docker group and check Docker config'
        
       - task: TerraformDrift@1
         inputs:
