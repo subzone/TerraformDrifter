@@ -18,6 +18,7 @@ function handleTofuOperations(workingDirectory) {
   
     // Initialize tofu
     const initArgs = [
+      'docker',
       'run',
       `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID}`,
       `-e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET}`,
@@ -29,7 +30,7 @@ function handleTofuOperations(workingDirectory) {
       'init'
     ];
     console.log('Docker command: docker', initArgs);
-    const init = spawnSync('docker', initArgs, { stdio: 'inherit' });
+    const init = spawnSync('bash', '-c', initArgs, { stdio: 'inherit' });
     console.log('Init command=', init);
     if (init.stdout) {
       console.log(init.stdout.toString());
@@ -43,6 +44,7 @@ function handleTofuOperations(workingDirectory) {
   
     // Check for drift
     const dockerArgs = [
+      'docker',
       'run',
       `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID}`,
       `-e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET}`,
@@ -55,7 +57,7 @@ function handleTofuOperations(workingDirectory) {
       '-detailed-exitcode'
     ];
     console.log('Docker command: docker', dockerArgs)
-    const plan = spawnSync('docker', dockerArgs, { stdio: 'inherit' });
+    const plan = spawnSync('bash', '-c', dockerArgs, { stdio: 'inherit' });
      if (plan.stdout) {
       console.log(plan.stdout.toString());
     } else {
@@ -72,7 +74,7 @@ function handleTofuOperations(workingDirectory) {
             'Drift detected.',
             ' AutoReconciliation parameter set to true.',
             'Reconciling...');
-        const apply = spawnSync('docker', ['run', 
+        const apply = spawnSync('bash', ['-c', 'docker', 'run', 
         `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`, 
         ` --workdir=${absoluteWorkingDirectory}`, ` -v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'apply',
           '-auto-approve'],
