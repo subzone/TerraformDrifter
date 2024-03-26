@@ -25,7 +25,7 @@ function handleTofuOperations(workingDirectory) {
       `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
       `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
       `--workdir=${absoluteWorkingDirectory}`,
-      `--mount source=${absoluteWorkingDirectory},target=${absoluteWorkingDirectory}`,
+      `--mount type=volume,source=${absoluteWorkingDirectory},target=${absoluteWorkingDirectory}`,
       'ghcr.io/subzone/opentofu:latest',
       'init'
     ];
@@ -74,7 +74,7 @@ function handleTofuOperations(workingDirectory) {
             'Reconciling...');
         const apply = spawnSync('docker', [ 'run', 
         `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`, 
-        ` --workdir=${absoluteWorkingDirectory}`, `--mount source=${absoluteWorkingDirectory},target=${absoluteWorkingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'apply',
+        ` --workdir=${absoluteWorkingDirectory}`, `--mount type=volume,source=${absoluteWorkingDirectory},target=${absoluteWorkingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'apply',
           '-auto-approve'],
         {cwd: workingDirectory, stdio: 'inherit'});
         if (apply.stdout) {
