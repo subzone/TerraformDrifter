@@ -14,16 +14,17 @@ const path = require('path');
 function handleTofuOperations(workingDirectory) {
     console.log('Working directory: ', workingDirectory);
     const absoluteWorkingDirectory = path.resolve(workingDirectory);
+    console.log('Absolute working directory: ', absoluteWorkingDirectory);
   
     // Initialize tofu
-    const init = spawnSync('docker', ['run', `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`, `--workdir=/${absoluteWorkingDirectory}`, `-v ${absoluteWorkingDirectory}:/${absoluteWorkingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'init'], { stdio: 'inherit' });
+    const init = spawnSync('docker', ['run', `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`, `--workdir=${absoluteWorkingDirectory}`, `-v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'init'], { stdio: 'inherit' });
     if (init.error) {
       console.error('\x1b[31m%s\x1b[0m', 'Error: tofu init failed');
       process.exit(1);
     }
   
     // Check for drift
-    const plan = spawnSync('docker', ['run', `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`, `--workdir=/${absoluteWorkingDirectory}`, `-v ${absoluteWorkingDirectory}:/${absoluteWorkingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'plan', '-detailed-exitcode'], { stdio: 'inherit' });
+    const plan = spawnSync('docker', ['run', `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`, `--workdir=${absoluteWorkingDirectory}`, `-v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'plan', '-detailed-exitcode'], { stdio: 'inherit' });
     if (plan.error) {
       console.error('\x1b[31m%s\x1b[0m', 'Error: tofu plan failed');
       process.exit(1);
