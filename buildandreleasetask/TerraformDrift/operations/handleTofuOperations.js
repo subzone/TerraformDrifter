@@ -28,7 +28,7 @@ function handleTofuOperations(workingDirectory) {
       'ghcr.io/subzone/opentofu:latest',
       'init'
     ];
-    console.log('Docker command: docker', initargs)
+    console.log('Docker command: docker', initArgs)
     const init = spawnSync('docker', initArgs, { stdio: 'inherit' });
     if (init.stdout) {
       console.log(init.stdout.toString());
