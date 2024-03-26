@@ -25,12 +25,11 @@ function handleTofuOperations(workingDirectory) {
       `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
       `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
       `--workdir=${absoluteWorkingDirectory}`,
-      `--mount 'type=volume,source='${absoluteWorkingDirectory}',target='${absoluteWorkingDirectory}`,
-      'ghcr.io/subzone/opentofu:latest',
-      'init'
+      `-v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`,
+      'ghcr.io/subzone/opentofu:latest'
     ];
     console.log('Docker command: docker','run', ...initArgs, 'init');
-    const init = spawnSync('docker',['run', ...initArgs], { stdio: 'inherit' });
+    const init = spawnSync('docker',['run', ...initArgs, 'init'], { stdio: 'inherit' });
     console.log('Init command=', init);
     if (init.stdout) {
       console.log(init.stdout.toString());
@@ -49,7 +48,7 @@ function handleTofuOperations(workingDirectory) {
       `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
       `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
       `--workdir=${absoluteWorkingDirectory}`,
-      `--mount source=${absoluteWorkingDirectory},target=${absoluteWorkingDirectory}`,
+      `-v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`,
       'ghcr.io/subzone/opentofu:latest',
       'plan',
       '-detailed-exitcode'
@@ -74,7 +73,7 @@ function handleTofuOperations(workingDirectory) {
             'Reconciling...');
         const apply = spawnSync('docker', [ 'run', 
         `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`, 
-        ` --workdir=${absoluteWorkingDirectory}`, `--mount type=volume,source=${absoluteWorkingDirectory},target=${absoluteWorkingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'apply',
+        ` --workdir=${absoluteWorkingDirectory}`, `-v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'apply',
           '-auto-approve'],
         {cwd: workingDirectory, stdio: 'inherit'});
         if (apply.stdout) {
