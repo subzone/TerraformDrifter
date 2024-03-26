@@ -15,7 +15,7 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 91
+    "Patch": 92
   },
   "instanceNameFormat": "Check Terraform Drift",
   "inputs": [
