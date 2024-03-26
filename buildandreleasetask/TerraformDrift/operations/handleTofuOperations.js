@@ -30,7 +30,7 @@ function handleTofuOperations(workingDirectory) {
       'init'
     ];
     console.log('Docker command: docker', initArgs);
-    const init = spawnSync('bash', '-c', initArgs, { stdio: 'inherit' });
+    const init = spawnSync('bash',[ '-c', ...initArgs], { stdio: 'inherit' });
     console.log('Init command=', init);
     if (init.stdout) {
       console.log(init.stdout.toString());
@@ -57,7 +57,7 @@ function handleTofuOperations(workingDirectory) {
       '-detailed-exitcode'
     ];
     console.log('Docker command: docker', dockerArgs)
-    const plan = spawnSync('bash', '-c', dockerArgs, { stdio: 'inherit' });
+    const plan = spawnSync('bash',[ '-c', ...dockerArgs ], { stdio: 'inherit' });
      if (plan.stdout) {
       console.log(plan.stdout.toString());
     } else {
