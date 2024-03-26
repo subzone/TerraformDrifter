@@ -27,7 +27,7 @@ function handleTofuOperations(workingDirectory) {
       'ghcr.io/subzone/opentofu:latest',
       'init'
     ];
-    console.log('Docker command: docker', initArgs);
+    console.log('Docker command: docker', ...initArgs);
     const init = spawnSync('docker',['run', ...initArgs], { stdio: 'inherit' });
     console.log('Init command=', init);
     if (init.stdout) {
@@ -52,7 +52,7 @@ function handleTofuOperations(workingDirectory) {
       'plan',
       '-detailed-exitcode'
     ];
-    console.log('Docker command: docker', dockerArgs)
+    console.log('Docker command: docker', ...dockerArgs)
     const plan = spawnSync('docker',[ 'run', ...dockerArgs ], { stdio: 'inherit' });
      if (plan.stdout) {
       console.log(plan.stdout.toString());
