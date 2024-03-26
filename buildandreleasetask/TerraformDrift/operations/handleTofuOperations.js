@@ -4,7 +4,7 @@ const tl = require('azure-pipelines-task-lib/task');
 // let autoReconcile = true; // or false depending on your needs
 const autoReconcile = tl.getBoolInput('autoReconcile', false);
 const path = require('path');
-const absoluteWorkingDirectory = path.resolve(workingDirectory);
+
 /**
  * Handles tofu operations for a given working directory.
  *
@@ -13,6 +13,7 @@ const absoluteWorkingDirectory = path.resolve(workingDirectory);
  */
 function handleTofuOperations(workingDirectory) {
     console.log('Working directory: ', workingDirectory);
+    const absoluteWorkingDirectory = path.resolve(workingDirectory);
   
     // Initialize tofu
     const init = spawnSync('docker', ['run', `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID} -e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET} -e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID} -e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`, `--workdir=/${absoluteWorkingDirectory}`, `-v ${absoluteWorkingDirectory}:/${absoluteWorkingDirectory}`, 'ghcr.io/subzone/opentofu:latest', 'init'], { stdio: 'inherit' });
