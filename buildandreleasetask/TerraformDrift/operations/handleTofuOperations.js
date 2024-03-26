@@ -13,6 +13,7 @@ const path = require('path');
  */
 function handleTofuOperations(workingDirectory) {
     console.log('Working directory: ', workingDirectory);
+    console.log('Files in working directory: ', fs.readdirSync(workingDirectory));
     const absoluteWorkingDirectory = path.resolve(workingDirectory);
     console.log('Absolute working directory: ', absoluteWorkingDirectory);
   
