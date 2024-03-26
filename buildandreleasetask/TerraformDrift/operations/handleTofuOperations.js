@@ -47,8 +47,8 @@ function handleTofuOperations(workingDirectory) {
       `-e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET}`,
       `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
       `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
-      `--workdir=${absoluteWorkingDirectory}`,
-      `-v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`,
+      `--workdir=/app`,
+      `-v ${absoluteWorkingDirectory}\:/app`,
       'ghcr.io/subzone/opentofu:latest',
       'plan',
       '-detailed-exitcode'
@@ -76,8 +76,8 @@ function handleTofuOperations(workingDirectory) {
           `-e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET}`,
           `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
           `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
-          `--workdir=${absoluteWorkingDirectory}`,
-          `-v /${absoluteWorkingDirectory}:/${absoluteWorkingDirectory}`,
+          `--workdir=/app`,
+          `-v ${absoluteWorkingDirectory}\:/app`,
           'ghcr.io/subzone/opentofu:latest' 
         ];
         console.log('Docker command: docker', 'run', ...applyArgs);
