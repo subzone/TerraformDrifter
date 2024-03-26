@@ -23,7 +23,7 @@ function handleTofuOperations(workingDirectory) {
       `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
       `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
       `--workdir=${absoluteWorkingDirectory}`,
-      `--mount type=bind,source=${absoluteWorkingDirectory},target=${absoluteWorkingDirectory}`,
+      `-v ${absoluteWorkingDirectory}/${absoluteWorkingDirectory}`,
       'ghcr.io/subzone/opentofu:latest',
       'init'
     ];
@@ -47,7 +47,7 @@ function handleTofuOperations(workingDirectory) {
       `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
       `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
       `--workdir=${absoluteWorkingDirectory}`,
-      `--mount type=bind,source=${absoluteWorkingDirectory},target=${absoluteWorkingDirectory}`,
+      `-v ${absoluteWorkingDirectory}/${absoluteWorkingDirectory}`,
       'ghcr.io/subzone/opentofu:latest',
       'plan',
       '-detailed-exitcode'
