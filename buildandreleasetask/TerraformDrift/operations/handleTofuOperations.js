@@ -25,7 +25,7 @@ function handleTofuOperations(workingDirectory) {
       `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
       `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
       `--workdir=${absoluteWorkingDirectory}`,
-      `--mount type=volume,source=${absoluteWorkingDirectory},target=${absoluteWorkingDirectory}`,
+      `--mount "type=volume,source=${absoluteWorkingDirectory},target=${absoluteWorkingDirectory}"`,
       'ghcr.io/subzone/opentofu:latest',
       'init'
     ];
