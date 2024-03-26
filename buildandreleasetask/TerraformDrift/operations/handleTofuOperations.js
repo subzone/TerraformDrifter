@@ -1,5 +1,6 @@
 const { spawnSync } = require('child_process');
 const tl = require('azure-pipelines-task-lib/task');
+const fs = require('fs');
 
 // let autoReconcile = true; // or false depending on your needs
 const autoReconcile = tl.getBoolInput('autoReconcile', false);
