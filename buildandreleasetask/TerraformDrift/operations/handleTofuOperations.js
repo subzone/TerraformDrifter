@@ -25,7 +25,7 @@ function handleTofuOperations(workingDirectory) {
       `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
       `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
       `--workdir=/app`,
-      `-v ${absoluteWorkingDirectory}:/app`,
+      `-v ${absoluteWorkingDirectory.trim()}:/app`,
       'ghcr.io/subzone/opentofu:latest'
     ];
     console.log('Docker command: docker','run', ...initArgs, 'init');
@@ -48,13 +48,11 @@ function handleTofuOperations(workingDirectory) {
       `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
       `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
       `--workdir=/app`,
-      `-v ${absoluteWorkingDirectory}:/app`,
-      'ghcr.io/subzone/opentofu:latest',
-      'plan',
-      '-detailed-exitcode'
+      `-v ${absoluteWorkingDirectory.trim()}:/app`,
+      'ghcr.io/subzone/opentofu:latest'
     ];
     console.log('Docker command: docker', ...dockerArgs)
-    const plan = spawnSync('docker',[ 'run', ...dockerArgs ], { stdio: 'inherit' });
+    const plan = spawnSync('docker',[ 'run', ...dockerArgs, 'plan', '-detailed-exitcode' ], { stdio: 'inherit' });
      if (plan.stdout) {
       console.log(plan.stdout.toString());
     } else {
@@ -77,10 +75,10 @@ function handleTofuOperations(workingDirectory) {
           `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
           `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
           `--workdir=/app`,
-          `-v ${absoluteWorkingDirectory}:/app`,
+          `-v ${absoluteWorkingDirectory.trim()}:/app`,
           'ghcr.io/subzone/opentofu:latest' 
         ];
-        console.log('Docker command: docker', 'run', ...applyArgs);
+        console.log('Docker command: docker', 'run', ...applyArgs, 'apply', '-auto-approve');
         const apply = spawnSync('docker', ['run', ...applyArgs, 'apply', '-auto-approve' ], { cwd: workingDirectory, stdio: 'inherit' });
         if (apply.stdout) {
           console.log(apply.stdout.toString());
