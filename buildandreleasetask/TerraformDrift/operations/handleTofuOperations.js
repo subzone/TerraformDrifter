@@ -23,13 +23,14 @@ function handleTofuOperations(workingDirectory) {
       `-e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET}`,
       `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
       `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
-      `--workdir=${workingDirectory}`,
-      `-v ${absoluteWorkingDirectory}:${workingDirectory}`,
+      `--workdir=${absoluteWorkingDirectory}`,
+      `-v ${absoluteWorkingDirectory}:${absoluteWorkingDirectory}`,
       'ghcr.io/subzone/opentofu:latest',
       'init'
     ];
-    console.log('Docker command: docker', initArgs)
+    console.log('Docker command: docker', initArgs);
     const init = spawnSync('docker', initArgs, { stdio: 'inherit' });
+    console.log('Init command=', init);
     if (init.stdout) {
       console.log(init.stdout.toString());
     } else {
