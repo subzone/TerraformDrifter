@@ -23,6 +23,7 @@ function handleTofuOperations(workingDirectory) {
             return;
         }
         console.log(`Stdout: ${stdout}`);
+        console.log('Init command completed');
 
         exec(`${dockerCommand} plan -detailed-exitcode`, (error, stdout, stderr) => {
             if (error) {
@@ -34,6 +35,7 @@ function handleTofuOperations(workingDirectory) {
                 return;
             }
             console.log(`Stdout: ${stdout}`);
+            console.log('Plan command completed');
 
             if (stdout.includes('exit code 2')) {
                 if (autoReconcile) {
@@ -48,6 +50,7 @@ function handleTofuOperations(workingDirectory) {
                             return;
                         }
                         console.log(`Stdout: ${stdout}`);
+                        console.log('Apply command completed');
                     });
                 } else {
                     console.log('Auto Reconciliation is set to false, please reconcile manually.');
