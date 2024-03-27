@@ -35,7 +35,7 @@ function handleTofuOperations(workingDirectory) {
                 console.error('\x1b[33m%s\x1b[0m', 'Output:', stdout);
                 if (error.code === 2) {
                     if (autoReconcile) {
-                        console.log('Drift detected. AutoReconciliation parameter set to true. Reconciling...');
+                        console.log('\x1b[33m%s\x1b[0m', 'Drift detected. AutoReconciliation parameter set to true. Reconciling...');
                         exec(`docker run ${dockerOptions} apply -auto-approve`, (error, stdout, stderr) => {
                             if (error) {
                                 console.error('stderr:', stderr);

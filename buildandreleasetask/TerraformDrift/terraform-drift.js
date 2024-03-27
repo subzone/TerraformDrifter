@@ -35,7 +35,7 @@ switch (provider) {
     process.env['ARM_CLIENT_ID'] = servicePrincipalId;
     process.env['ARM_CLIENT_SECRET'] = servicePrincipalKey;
 
-    console.log('Tenant ID: ', tenantId);
+    console.log('\x1b[33m%s\x1b[0m', 'Tenant ID: ', tenantId);
 
     handleOperations(tool, workingDirectory);
 
