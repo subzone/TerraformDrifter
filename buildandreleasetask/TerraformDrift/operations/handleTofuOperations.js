@@ -3,6 +3,23 @@ const tl = require('azure-pipelines-task-lib/task');
 const fs = require('fs');
 const path = require('path');
 
+const provider = tl.getInput('provider', true);
+
+let dockerImage;
+switch(provider) {
+    case 'azure':
+        dockerImage = 'ghcr.io/subzone/opentofu:azure-latest';
+        break;
+    case 'aws':
+        dockerImage = 'ghcr.io/subzone/awsopentofu:latest';
+        break;
+    case 'gcp':
+        dockerImage = 'ghcr.io/subzone/gcpopentofu:latest';
+        break;
+    default:
+        dockerImage = 'ghcr.io/subzone/opentofu:latest';
+        break;
+}
 const autoReconcile = tl.getBoolInput('autoReconcile', false);
 
 function handleTofuOperations(workingDirectory) {
@@ -11,6 +28,7 @@ function handleTofuOperations(workingDirectory) {
     const absoluteWorkingDirectory = path.resolve(workingDirectory).trim();
     console.log('\x1b[33m%s\x1b[0m', 'Absolute working directory: ', absoluteWorkingDirectory);
     console.log('\x1b[33m%s\x1b[0m','Autoreconcile Parameter value:', autoReconcile);
+    console.log('\x1b[33m%s\x1b[0m', 'Docker image:', dockerImage);
 
     const dockerOptions = [
         `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID}`,
@@ -25,7 +43,7 @@ function handleTofuOperations(workingDirectory) {
         `-e GCP_PRIVATE_KEY=${process.env.GCP_PRIVATE_KEY}`,
         `-v ${absoluteWorkingDirectory.trim()}:/app`,
         '-w /app',
-        'ghcr.io/subzone/opentofu:latest'
+        `${dockerImage}`
     ].join(' ');
 
     exec(`docker run ${dockerOptions} init`, (error, stdout, stderr) => {
