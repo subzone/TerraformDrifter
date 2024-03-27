@@ -17,6 +17,12 @@ function handleTofuOperations(workingDirectory) {
         `-e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET}`,
         `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
         `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
+        `-e AWS_ACCESS_KEY_ID=${process.env.AWS_ACCESS_KEY_ID}`,
+        `-e AWS_SECRET_ACCESS_KEY=${process.env.AWS_SECRET_ACCESS_KEY}`,
+        `-e AWS_SESSION_TOKEN=${process.env.AWS_SESSION_TOKEN}`,
+        `-e GCP_PROJECT_ID=${process.env.GCP_PROJECT_ID}`,
+        `-e GCP_CLIENT_EMAIL=${process.env.GCP_CLIENT_EMAIL}`,
+        `-e GCP_PRIVATE_KEY=${process.env.GCP_PRIVATE_KEY}`,
         `-v ${absoluteWorkingDirectory.trim()}:/app`,
         '-w /app',
         'ghcr.io/subzone/opentofu:latest'
