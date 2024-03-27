@@ -8,7 +8,7 @@ const provider = tl.getInput('provider', true);
 let dockerImage;
 switch(provider) {
     case 'azure':
-        dockerImage = 'ghcr.io/subzone/opentofu:azure-latest';
+        dockerImage = 'ghcr.io/subzone/opentofu:latest';
         break;
     case 'aws':
         dockerImage = 'ghcr.io/subzone/awsopentofu:latest';
