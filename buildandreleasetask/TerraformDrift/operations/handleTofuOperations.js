@@ -2,16 +2,15 @@ const { exec } = require('child_process');
 const tl = require('azure-pipelines-task-lib/task');
 const fs = require('fs');
 const path = require('path');
-const customLog = require('logger');
 
 const autoReconcile = tl.getBoolInput('autoReconcile', false);
 
 function handleTofuOperations(workingDirectory) {
-    customLog('Working directory: ', workingDirectory);
-    customLog('Files in working directory: ', fs.readdirSync(workingDirectory));
+    console.log('\x1b[33m%s\x1b[0m', 'Working directory: ', workingDirectory);
+    console.log('\x1b[33m%s\x1b[0m', 'Files in working directory: ', fs.readdirSync(workingDirectory));
     const absoluteWorkingDirectory = path.resolve(workingDirectory).trim();
-    customLog('Absolute working directory: ', absoluteWorkingDirectory);
-    customLog(autoReconcile);
+    console.log('\x1b[33m%s\x1b[0m', 'Absolute working directory: ', absoluteWorkingDirectory);
+    console.log('\x1b[33m%s\x1b[0m','Autoreconcile Parameter value:', autoReconcile);
 
     const dockerOptions = [
         `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID}`,
@@ -26,36 +25,35 @@ function handleTofuOperations(workingDirectory) {
     exec(`docker run ${dockerOptions} init`, (error, stdout, stderr) => {
         if (error) {
             console.error('Error: Init command failed');
-            console.error('stderr:', stderr);
             return;
         }
-        customLog('Init command output:', stdout);
-        customLog('Init command completed');
+        console.log('\x1b[33m%s\x1b[0m', 'Init command output:', stdout);
+        console.log('\x1b[33m%s\x1b[0m', 'Init command completed');
     
         exec(`docker run ${dockerOptions} plan -detailed-exitcode 2>&1`, (error, stdout, stderr) => {
             if (error) {
-                console.error('Output:', stdout);
+                console.error('\x1b[33m%s\x1b[0m', 'Output:', stdout);
                 if (error.code === 2) {
                     if (autoReconcile) {
-                        customLog('Drift detected. AutoReconciliation parameter set to true. Reconciling...');
+                        console.log('Drift detected. AutoReconciliation parameter set to true. Reconciling...');
                         exec(`docker run ${dockerOptions} apply -auto-approve`, (error, stdout, stderr) => {
                             if (error) {
                                 console.error('stderr:', stderr);
                                 console.error('Error: Apply command failed');
                                 return;
                             }
-                            customLog('stdout:', stdout);
-                            customLog('Apply command completed');
+                            console.log('\x1b[33m%s\x1b[0m', 'stdout:', stdout);
+                            console.log('\x1b[33m%s\x1b[0m', 'Apply command completed');
                         });
                     } else {
-                        customLog('Auto Reconciliation is set to false, please reconcile manually.');
+                        console.log('\x1b[33m%s\x1b[0m', 'Auto Reconciliation is set to false, please reconcile manually.');
                     }
                 }
                 return;
             }
-            customLog('Plan command output:', stdout);
-            customLog('Plan command completed');
-            customLog('No drift detected.');
+            console.log('\x1b[33m%s\x1b[0m', 'Plan command output:', stdout);
+            console.log('\x1b[33m%s\x1b[0m', 'Plan command completed');
+            console.log('\x1b[33m%s\x1b[0m', 'No drift detected.');
         });
     });
 }
