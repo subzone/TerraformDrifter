@@ -1,4 +1,4 @@
-name: DockerImageCI-AWS
+name: DockerImageCI-GCP
 on:
   workflow_dispatch:
 
