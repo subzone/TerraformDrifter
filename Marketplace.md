@@ -12,16 +12,18 @@ The Terraform Drift Azure DevOps Task is a custom task for Azure Pipelines that 
 ## Requirements
 
 - Azure DevOps
-- Terraform
+- Terraform #If used
+- Docker #for tofu
 
 ## Usage
 
-After installing the extension, you can add the Terraform Drift task to any of your pipelines. Currently task does not do installation of terraform, so that should be handled with task preceding TerraformDrift. Also this iteration supports only Azure deployments, aws and google is supported but not tested yet.
+After installing the extension, you can add the Terraform Drift task to any of your pipelines. Currently task does not do installation of terraform, so that should be handled with task preceding TerraformDrift. Also this iteration supports only Azure deployments, aws and google is supported but not tested yet. Besides Terraform you can check for drift in your infrastructure that is deployed with open tofu as well.
 
 
 ```task: TerraformDrift@1
 - task: TerraformDrift@1
   inputs:
+     tool: terraform #supports tofu as well
      workingDirectory: 'Your working dir where your terraform files are'
      provider: 'azure'  #can be aws or gcp as well
      azureSubscription: 'Service Connection to Azure' #or other provider`

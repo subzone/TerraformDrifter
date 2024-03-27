@@ -2,15 +2,16 @@ const { exec } = require('child_process');
 const tl = require('azure-pipelines-task-lib/task');
 const fs = require('fs');
 const path = require('path');
+const customLog = require('logger');
 
 const autoReconcile = tl.getBoolInput('autoReconcile', false);
 
 function handleTofuOperations(workingDirectory) {
-    console.log('Working directory: ', workingDirectory);
-    console.log('Files in working directory: ', fs.readdirSync(workingDirectory));
+    customLog('Working directory: ', workingDirectory);
+    customLog('Files in working directory: ', fs.readdirSync(workingDirectory));
     const absoluteWorkingDirectory = path.resolve(workingDirectory).trim();
-    console.log('Absolute working directory: ', absoluteWorkingDirectory);
-    console.log(autoReconcile);
+    customLog('Absolute working directory: ', absoluteWorkingDirectory);
+    customLog(autoReconcile);
 
     const dockerOptions = [
         `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID}`,
@@ -28,35 +29,33 @@ function handleTofuOperations(workingDirectory) {
             console.error('stderr:', stderr);
             return;
         }
-        console.log('Init command output:', stdout);
-        console.log('Init command completed');
+        customLog('Init command output:', stdout);
+        customLog('Init command completed');
     
         exec(`docker run ${dockerOptions} plan -detailed-exitcode 2>&1`, (error, stdout, stderr) => {
             if (error) {
                 console.error('Output:', stdout);
-                console.error(`Error: Plan command failed with exit code ${error.code}`);
-                console.error('Stderr:', stderr);
                 if (error.code === 2) {
                     if (autoReconcile) {
-                        console.log('Drift detected. AutoReconciliation parameter set to true. Reconciling...');
+                        customLog('Drift detected. AutoReconciliation parameter set to true. Reconciling...');
                         exec(`docker run ${dockerOptions} apply -auto-approve`, (error, stdout, stderr) => {
                             if (error) {
                                 console.error('stderr:', stderr);
                                 console.error('Error: Apply command failed');
                                 return;
                             }
-                            console.log('stdout:', stdout);
-                            console.log('Apply command completed');
+                            customLog('stdout:', stdout);
+                            customLog('Apply command completed');
                         });
                     } else {
-                        console.log('Auto Reconciliation is set to false, please reconcile manually.');
+                        customLog('Auto Reconciliation is set to false, please reconcile manually.');
                     }
                 }
                 return;
             }
-            console.log('Plan command output:', stdout);
-            console.log('Plan command completed');
-            console.log('No drift detected.');
+            customLog('Plan command output:', stdout);
+            customLog('Plan command completed');
+            customLog('No drift detected.');
         });
     });
 }

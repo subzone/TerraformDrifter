@@ -1,5 +1,6 @@
 const { spawnSync } = require('child_process');
 const tl = require('azure-pipelines-task-lib/task');
+const customLog = require('logger');
 
 // let autoReconcile = true; // or false depending on your needs
 const autoReconcile = tl.getBoolInput('autoReconcile', false);
@@ -11,14 +12,13 @@ const autoReconcile = tl.getBoolInput('autoReconcile', false);
  *  directory for the Terraform operations.
  */
 function handleTerraformOperations(workingDirectory) {
-    console.log('Working directory: ', workingDirectory);
+    customLog('Working directory: ', workingDirectory);
   
     // Initialize Terraform
     const init = spawnSync('terraform',
         ['init'], {cwd: workingDirectory, stdio: 'inherit'});
     if (init.error) {
-      console.error('\x1b[31m%s\x1b[0m',
-          'Error: Terraform init failed');
+      console.error('Error: Terraform init failed');
       process.exit(1);
     }
   
@@ -28,14 +28,13 @@ function handleTerraformOperations(workingDirectory) {
     {cwd: workingDirectory, stdio: 'inherit'});
   
     if (plan.error) {
-      console.error('\x1b[31m%s\x1b[0m', 'Error: Terraform plan failed');
+      console.error('Error: Terraform plan failed');
       process.exit(1);
     }
     // If the exit code is 2, there is drift
     if (plan.status === 2) {
       if (autoReconcile) {
-        console.log('\x1b[33m%s\x1b[0m\n\x1b[33m%s\x1b[0m',
-            'Drift detected.',
+        customLog('Drift detected.',
             ' AutoReconciliation parameter set to true.',
             'Reconciling...');
         const apply = spawnSync('terraform', ['apply',
@@ -46,12 +45,10 @@ function handleTerraformOperations(workingDirectory) {
           process.exit(1);
         }
       } else {
-        console.log('\x1b[32m%s\x1b[0m',
-            'Auto Reconciliation is set to false, please reconcile manually.');
+        customLog('Auto Reconciliation is set to false, please reconcile manually.');
       }
     } else {
-      console.log('\x1b[32m%s\x1b[0m',
-          'No drift detected.');
+      customLog('No drift detected.');
     }
   }
   
