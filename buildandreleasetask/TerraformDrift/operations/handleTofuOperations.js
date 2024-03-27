@@ -27,17 +27,19 @@ function handleTofuOperations(workingDirectory) {
             console.error('stderr:', stderr);
             return;
         }
+        console.log('Init command output:', stdout);
         console.log('Init command completed');
-        console.log('stdout:', stdout);
 
-        exec(`docker run ${dockerOptions} plan -detailed-exitcode`, (error, stdout, stderr) => {
+        exec(`docker run ${dockerOptions} plan -detailed-exitcode 2>&1`, (error, stdout, stderr) => {
             if (error) {
-                console.error('Error: Plan command failed');
-                console.error('stderr:', stderr);
+                console.error(`Error: Plan command failed with exit code ${error.code}`);
+                console.error('Output:', stdout);
+                console.error('Stderr:', stderr);
                 return;
             }
+            console.log('Plan command output:', stdout);
             console.log('Plan command completed');
-            console.log('stdout:', stdout);
+        });
 
             if (error && error.code === 2) {
                 if (autoReconcile) {
