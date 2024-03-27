@@ -1,10 +1,9 @@
-const Docker = require('dockerode');
+const shell = require('shelljs');
 const tl = require('azure-pipelines-task-lib/task');
 const fs = require('fs');
 const path = require('path');
 
 const autoReconcile = tl.getBoolInput('autoReconcile', false);
-const docker = new Docker();
 
 function handleTofuOperations(workingDirectory) {
     console.log('Working directory: ', workingDirectory);
@@ -12,52 +11,43 @@ function handleTofuOperations(workingDirectory) {
     const absoluteWorkingDirectory = path.resolve(workingDirectory).trim();
     console.log('Absolute working directory: ', absoluteWorkingDirectory);
 
-    const dockerOptions = {
-        Image: 'ghcr.io/subzone/opentofu:latest',
-        Env: [
-            `ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID}`,
-            `ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET}`,
-            `ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
-            `ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`
-        ],
-        WorkingDir: '/app',
-        HostConfig: {
-            Binds: [`${absoluteWorkingDirectory.trim()}:/app`]
-        }
-    };
+    const dockerOptions = [
+        `-e ARM_CLIENT_ID=${process.env.ARM_CLIENT_ID}`,
+        `-e ARM_CLIENT_SECRET=${process.env.ARM_CLIENT_SECRET}`,
+        `-e ARM_SUBSCRIPTION_ID=${process.env.ARM_SUBSCRIPTION_ID}`,
+        `-e ARM_TENANT_ID=${process.env.ARM_TENANT_ID}`,
+        `-v ${absoluteWorkingDirectory.trim()}:/app`,
+        '-w /app',
+        'ghcr.io/subzone/opentofu:latest'
+    ].join(' ');
 
-    docker.run(dockerOptions, ['init'], process.stdout, function (err, data, container) {
-        if (err) {
-            console.error(`Error: ${err.message}`);
-            return;
-        }
-        console.log('Init command completed');
+    if (shell.exec(`docker run ${dockerOptions} init`).code !== 0) {
+        console.error('Error: Init command failed');
+        return;
+    }
+    console.log('Init command completed');
 
-        docker.run(dockerOptions, ['plan', '-detailed-exitcode'], process.stdout, function (err, data, container) {
-            if (err) {
-                console.error(`Error: ${err.message}`);
+    const planResult = shell.exec(`docker run ${dockerOptions} plan -detailed-exitcode`);
+    if (planResult.code !== 0) {
+        console.error('Error: Plan command failed');
+        return;
+    }
+    console.log('Plan command completed');
+
+    if (planResult.code === 2) {
+        if (autoReconcile) {
+            console.log('Drift detected. AutoReconciliation parameter set to true. Reconciling...');
+            if (shell.exec(`docker run ${dockerOptions} apply -auto-approve`).code !== 0) {
+                console.error('Error: Apply command failed');
                 return;
             }
-            console.log('Plan command completed');
-
-            if (data.StatusCode === 2) {
-                if (autoReconcile) {
-                    console.log('Drift detected. AutoReconciliation parameter set to true. Reconciling...');
-                    docker.run(dockerOptions, ['apply', '-auto-approve'], process.stdout, function (err, data, container) {
-                        if (err) {
-                            console.error(`Error: ${err.message}`);
-                            return;
-                        }
-                        console.log('Apply command completed');
-                    });
-                } else {
-                    console.log('Auto Reconciliation is set to false, please reconcile manually.');
-                }
-            } else {
-                console.log('No drift detected.');
-            }
-        });
-    });
+            console.log('Apply command completed');
+        } else {
+            console.log('Auto Reconciliation is set to false, please reconcile manually.');
+        }
+    } else {
+        console.log('No drift detected.');
+    }
 }
 
 module.exports = handleTofuOperations;
