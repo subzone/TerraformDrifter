@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "terraform-drift",
   "publisher": "subzone",
-  "version": "1.0.126",
+  "version": "1.0.127",
   "name": "TerraformDrift",
   "description": "An Azure DevOps task that checks for Terraform drift and enables reconciliation",
   "public": true,
@@ -37,11 +37,11 @@
       "id": "driftRunsStatusesHub",
       "type": "ms.vss-web.hub",
       "targets": [
-          "ms.vss-code-web.code-hub-group"
+        "ms.vss-code-web.code-hub-group"
       ],
       "properties": {
-          "name": "Drift Runs and Statuses",
-          "uri": "hub/driftRunsStatuses.html"
+        "name": "Drift Runs and Statuses",
+        "uri": "hub/driftRunsStatuses.html"
       }
     }
   ],
