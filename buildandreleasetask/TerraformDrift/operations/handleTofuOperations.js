@@ -62,6 +62,7 @@ function handleTofuOperations(workingDirectory) {
                 console.log('No drift detected.');
             }
         });
+     });
 }
 
-module.exports = handleTofuOperations;
+export default handleTofuOperations;
