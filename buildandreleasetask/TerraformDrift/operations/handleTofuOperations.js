@@ -24,26 +24,32 @@ function handleTofuOperations(workingDirectory) {
     exec(`docker run ${dockerOptions} init`, (error, stdout, stderr) => {
         if (error) {
             console.error('Error: Init command failed');
+            console.error('stderr:', stderr);
             return;
         }
         console.log('Init command completed');
+        console.log('stdout:', stdout);
 
         exec(`docker run ${dockerOptions} plan -detailed-exitcode`, (error, stdout, stderr) => {
             if (error) {
                 console.error('Error: Plan command failed');
+                console.error('stderr:', stderr);
                 return;
             }
             console.log('Plan command completed');
+            console.log('stdout:', stdout);
 
-            if (error.code === 2) {
+            if (error && error.code === 2) {
                 if (autoReconcile) {
                     console.log('Drift detected. AutoReconciliation parameter set to true. Reconciling...');
                     exec(`docker run ${dockerOptions} apply -auto-approve`, (error, stdout, stderr) => {
                         if (error) {
                             console.error('Error: Apply command failed');
+                            console.error('stderr:', stderr);
                             return;
                         }
                         console.log('Apply command completed');
+                        console.log('stdout:', stdout);
                     });
                 } else {
                     console.log('Auto Reconciliation is set to false, please reconcile manually.');
