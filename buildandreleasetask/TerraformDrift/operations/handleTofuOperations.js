@@ -2,6 +2,7 @@ const { exec } = require('child_process');
 const tl = require('azure-pipelines-task-lib/task');
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const autoReconcile = tl.getBoolInput('autoReconcile', false);
 
@@ -31,6 +32,8 @@ function handleTofuOperations(workingDirectory) {
         console.log('Init command output:', stdout);
         console.log('Init command completed');
 
+        // ...
+
         exec(`docker run ${dockerOptions} plan -detailed-exitcode 2>&1`, (error, stdout, stderr) => {
             if (error) {
                 console.error('Output:', stdout);
@@ -44,15 +47,14 @@ function handleTofuOperations(workingDirectory) {
             if (error && error.code === 2) {
                 if (autoReconcile) {
                     console.log('Drift detected. AutoReconciliation parameter set to true. Reconciling...');
-                    exec(`docker run ${dockerOptions} apply -auto-approve`, (error, stdout, stderr) => {
-                        if (error) {
-                            console.error('stderr:', stderr);
-                            console.error('Error: Apply command failed');
-                            return;
-                        }
-                        console.log('stdout:', stdout);
+                    try {
+                        const applyOutput = execSync(`docker run ${dockerOptions} apply -auto-approve`).toString();
+                        console.log('Apply command output:', applyOutput);
                         console.log('Apply command completed');
-                    });
+                    } catch (applyError) {
+                        console.error('Error: Apply command failed');
+                        console.error('Stderr:', applyError.stderr.toString());
+                    }
                 } else {
                     console.log('Auto Reconciliation is set to false, please reconcile manually.');
                 }
@@ -60,7 +62,6 @@ function handleTofuOperations(workingDirectory) {
                 console.log('No drift detected.');
             }
         });
-    });
 }
 
 module.exports = handleTofuOperations;
