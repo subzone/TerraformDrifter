@@ -41,18 +41,7 @@
       ],
       "properties": {
           "name": "Drift Runs and Statuses",
-          "uri": "driftRunsStatuses.html"
-      }
-    },
-    {
-      "id": "driftRunsStatusesHub",
-      "type": "ms.vss-web.hub",
-      "targets": [
-          "ms.vss-code-web.code-hub-group"
-      ],
-      "properties": {
-          "name": "Drift Runs and Statuses",
-          "uri": "driftRunsStatuses.html"
+          "uri": "hub/driftRunsStatuses.html"
       }
     }
   ],
