@@ -39,7 +39,6 @@ function handleTofuOperations(workingDirectory) {
             }
             console.log('Plan command output:', stdout);
             console.log('Plan command completed');
-        });
 
             if (error && error.code === 2) {
                 if (autoReconcile) {
