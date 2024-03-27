@@ -2,6 +2,7 @@ const { exec } = require('child_process');
 const tl = require('azure-pipelines-task-lib/task');
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const autoReconcile = tl.getBoolInput('autoReconcile', false);
 
@@ -58,7 +59,7 @@ function handleTofuOperations(workingDirectory) {
             console.log('Plan command completed');
             console.log('No drift detected.');
         });
-    });
+     });
 }
 
-module.exports = handleTofuOperations;
+export default handleTofuOperations;
