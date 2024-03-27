@@ -1,4 +1,4 @@
-const shell = require('shelljs');
+const { exec } = require('child_process');
 const tl = require('azure-pipelines-task-lib/task');
 const fs = require('fs');
 const path = require('path');
@@ -21,33 +21,38 @@ function handleTofuOperations(workingDirectory) {
         'ghcr.io/subzone/opentofu:latest'
     ].join(' ');
 
-    if (shell.exec(`docker run ${dockerOptions} init`).code !== 0) {
-        console.error('Error: Init command failed');
-        return;
-    }
-    console.log('Init command completed');
+    exec(`docker run ${dockerOptions} init`, (error, stdout, stderr) => {
+        if (error) {
+            console.error('Error: Init command failed');
+            return;
+        }
+        console.log('Init command completed');
 
-    const planResult = shell.exec(`docker run ${dockerOptions} plan -detailed-exitcode`);
-    if (planResult.code !== 0) {
-        console.error('Error: Plan command failed');
-        return;
-    }
-    console.log('Plan command completed');
-
-    if (planResult.code === 2) {
-        if (autoReconcile) {
-            console.log('Drift detected. AutoReconciliation parameter set to true. Reconciling...');
-            if (shell.exec(`docker run ${dockerOptions} apply -auto-approve`).code !== 0) {
-                console.error('Error: Apply command failed');
+        exec(`docker run ${dockerOptions} plan -detailed-exitcode`, (error, stdout, stderr) => {
+            if (error) {
+                console.error('Error: Plan command failed');
                 return;
             }
-            console.log('Apply command completed');
-        } else {
-            console.log('Auto Reconciliation is set to false, please reconcile manually.');
-        }
-    } else {
-        console.log('No drift detected.');
-    }
+            console.log('Plan command completed');
+
+            if (error.code === 2) {
+                if (autoReconcile) {
+                    console.log('Drift detected. AutoReconciliation parameter set to true. Reconciling...');
+                    exec(`docker run ${dockerOptions} apply -auto-approve`, (error, stdout, stderr) => {
+                        if (error) {
+                            console.error('Error: Apply command failed');
+                            return;
+                        }
+                        console.log('Apply command completed');
+                    });
+                } else {
+                    console.log('Auto Reconciliation is set to false, please reconcile manually.');
+                }
+            } else {
+                console.log('No drift detected.');
+            }
+        });
+    });
 }
 
 module.exports = handleTofuOperations;
